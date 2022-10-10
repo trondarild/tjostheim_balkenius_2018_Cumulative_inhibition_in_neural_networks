@@ -1,0 +1,245 @@
+<?xml version="1.0"?>
+
+<group title="Image sequence generation">
+<!-- Modules -->
+    <module 
+        class = "InputJPEG" 
+        name = "In_1" 
+        filename="../pics/clooney32x32.jpg"
+        filecount="1"
+        iterations = "100000"
+        random="no" 
+        size_x="32"
+        size_y="32"
+    />
+    <module 
+        class = "InputPNG" 
+        name = "In_2" 
+        filename="../pics/cifar_train/%05d.png"
+        filecount="50000"
+        iterations = "100000"
+        random="yes" 
+        size_x="32"
+        size_y="32"
+    />
+    <module
+        class="AddBorder_Group"
+        name="In1_AddBorder"
+        output_x="36"
+        output_y="36"
+        offset_x="2"
+        offset_y="2"
+    />
+    <module
+        class="AddBorder_Group"
+        name="In2_AddBorder"
+        output_x="36"
+        output_y="36"
+        offset_x="2"
+        offset_y="2"
+    />
+    <module
+        class="AddBorder_Group"
+        name="In1_AddBorder_Dummy"
+        output_x="36"
+        output_y="36"
+        offset_x="2"
+        offset_y="2"
+    />
+    <module
+        class="AddBorder_Group"
+        name="In2_AddBorder_Dummy"
+        output_x="36"
+        output_y="36"
+        offset_x="2"
+        offset_y="2"
+    />
+    <!--Output image-->
+        <_module
+            class = "OutputPNG"
+            name = "OutputImg"
+            filename = "run_data/clooney_gen/tmp/clooney_regen_%03d.png"
+            period="5"
+        />
+        <_module
+            class = "OutputPNG"
+            name = "OutputImgWeights"
+            filename = "run_data/weight_img/weight_l4_%03d.png"
+            period="5"
+        />
+        <module
+			class = "Map"
+			name = "WeightMap"
+			low_source = "0.0"
+			high_source = "1.0"
+			low_target = "0.0"
+			high_target = "0.95"
+		/>
+    <!--csom stack-->
+            <module
+                class="CSOM_PCA"
+                name="L1"
+                rf_inc_x="1"
+                rf_inc_y="1"
+                span_size_x="0"
+                span_size_y="0"
+                rf_size_x="3"
+                rf_size_y="3"
+                filename="weights/L1_rfx=3_rfy=3_incx=3_incy=3_somx=12_somy=3_block=3_span=0.dat"
+                save_state="no"
+                load_state="yes"
+                som_size_x="12"
+                som_size_y="3"
+                block_size_x="3"
+                block_size_y="3"
+                alpha="0.0005"
+                update_weights="no"
+                save_weights_only="yes"
+                load_weights_only="yes"
+                upstreams="2"
+                downstreams="1"
+                _period="4"
+                _phase="0"
+            />
+            
+            
+            <module
+                class="CSOM_PCA"
+                name="L2"
+                rf_inc_x="12"
+                rf_inc_y="3"
+                span_size_x="24"
+                span_size_y="6"
+                rf_size_x="36"
+                rf_size_y="9"
+                filename="weights/L2_rfx=36_rfy=9_incx=36_incy=9_somx=20_somy=10_blockx=36_blocky=9_spanx=24_spany=6.dat"
+                _filename="weights/L2_rfx=36_rfy=9_incx=36_incy=9_somx=20_somy=10_blockx=36_blocky=9_spanx=0_spany=0.dat"
+                save_state="no"
+                load_state="yes"
+                som_size_x="20"
+                som_size_y="10"
+                block_size_x="12"
+                block_size_y="3"
+                alpha="0.0001"
+                update_weights="no"
+                save_weights_only="yes"
+                load_weights_only="yes"
+                upstreams="2"
+                downstreams="1"
+                _period="4"
+                _phase="1"
+            />
+           
+            <module
+                class="CSOM_PCA"
+                name="L3"
+                rf_size_x="40"
+                rf_size_y="20"
+                rf_inc_x="20"
+                rf_inc_y="10"
+                som_size_x="24"
+                som_size_y="12"
+                block_size_x="20"
+                block_size_y="10"
+                span_size_x="100"
+                span_size_y="50"
+                filename="weights/L3_rfx=40_rfy=20_incx=40_incy=20_somx=24_somy=12_blockx=40_blocky=20_spanx=100_spany=50.dat"
+                _filename="weights/L3_rfx=40_rfy=20_incx=40_incy=20_somx=24_somy=12_blockx=40_blocky=20_spanx=0_spany=0.dat"
+                save_state="no"
+                load_state="yes"
+                alpha="0.005"
+                alpha_min="0.0001"
+                alpha_decay="0.9952"
+                update_weights="no"
+                save_weights_only="yes"
+                load_weights_only="yes"
+                upstreams="2"
+                downstreams="1"
+                _period="4"
+				_phase="2"
+				device_id="1"
+            />
+           
+            <module
+                class="CSOM_PCA"
+                name="L4"
+                rf_size_x="48"
+                rf_size_y="24"
+                rf_inc_x="24"
+                rf_inc_y="12"
+                som_size_x="16"
+                som_size_y="8"
+                block_size_x="24"
+                block_size_y="12"
+                span_size_x="264"
+                span_size_y="132"
+                filename="weights/L4_rfx=48_rfy=24_incx=48_incy=24_somx=32_somy=16_blockx=48_blocky=24_spanx=264_spany=132.dat"
+                _filename="weights/L4_rfx=48_rfy=24_incx=48_incy=24_somx=32_somy=16_blockx=48_blocky=24_spanx=0_spany=0.dat"
+                save_state="no"
+                load_state="yes"
+                alpha="0.0005"
+                alpha_min="0.0001"
+                alpha_decay="0.9952"
+                update_weights="no"
+                save_weights_only="yes"
+                load_weights_only="yes"
+                border_multiplier="1"
+                upstreams="2"
+                downstreams="1"
+                _period="4"
+                _phase="3"
+				device_id="1"
+            />
+<!--Connections-->	
+        <connection sourcemodule = "In_1" source = "INTENSITY" targetmodule = "In1_AddBorder" target = "INPUT" />
+        <connection sourcemodule = "In_2" source = "INTENSITY" targetmodule = "In2_AddBorder" target = "INPUT" />
+        <connection sourcemodule = "In_1" source = "INTENSITY" targetmodule = "In1_AddBorder_Dummy" target = "INPUT" delay="9" />
+        <connection sourcemodule = "In_2" source = "INTENSITY" targetmodule = "In2_AddBorder_Dummy" target = "INPUT" delay="9" />
+        <connection sourcemodule = "In1_AddBorder" source = "OUTPUT" targetmodule = "L1" target = "INPUT1" />
+        <connection sourcemodule = "In2_AddBorder" source = "OUTPUT" targetmodule = "L1" target = "INPUT2" />
+    <!--csom stack-->
+        <connection sourcemodule = "L1" source = "OUTPUT1" targetmodule = "L2" target = "INPUT1" delay="1"/>
+        <connection sourcemodule = "L1" source = "OUTPUT2" targetmodule = "L2" target = "INPUT2" delay="1"/>
+        <connection sourcemodule = "L2" source = "RECONSTRUCTION" targetmodule = "L1" target = "TOP_DOWN" delay="1"/>
+        <connection sourcemodule = "L2" source = "OUTPUT1" targetmodule = "L3" target = "INPUT1" delay="1"/>
+        <connection sourcemodule = "L2" source = "OUTPUT2" targetmodule = "L3" target = "INPUT2" delay="1"/>
+        <connection sourcemodule = "L3" source = "RECONSTRUCTION" targetmodule = "L2" target = "TOP_DOWN" delay="1"/>
+        <connection sourcemodule = "L3" source = "OUTPUT1" targetmodule = "L4" target = "INPUT1" delay="1"/>
+        <connection sourcemodule = "L3" source = "OUTPUT2" targetmodule = "L4" target = "INPUT2" delay="1"/>
+        <connection sourcemodule = "L4" source = "RECONSTRUCTION" targetmodule = "L3" target = "TOP_DOWN" delay="1"/>
+        <connection sourcemodule = "L4" source = "OUTPUT2" targetmodule = "L4" target = "TOP_DOWN" delay="1"/>
+
+        <_connection sourcemodule = "L3" source = "OUTPUT1" targetmodule = "L3" target = "TOP_DOWN" delay="1"/>
+        <_connection sourcemodule = "L1" source = "RECONSTRUCTION" targetmodule = "OutputImg" target = "INTENSITY" delay="1"/>
+        <connection sourcemodule = "L4" source = "WEIGHTS" targetmodule = "WeightMap" target = "INPUT" delay="1"/>
+        <_connection sourcemodule = "WeightMap" source = "OUTPUT" targetmodule = "OutputImgWeights" target = "INTENSITY" delay="1"/>
+
+        
+<!-- View -->
+<view name="Reconstruction">
+    <object class= "Image" type="gray" module="In2_AddBorder_Dummy" source="OUTPUT"
+			        	x="0" y="0" h="2" w="2" />
+    <object class= "Image" type="gray" module="In1_AddBorder_Dummy" source="OUTPUT"
+			        	x="2" y="0" h="2" w="2" />
+    <object class= "Image" type="gray" module="L1" source="RECONSTRUCTION"
+			        	x="4" y="0" h="2" w="2" />
+</view>
+<view name="Stack">
+	<object class= "Image" type="gray" module="L1" source="OUTPUT2"
+			        	x="0" y="0" h="2" w="2" />
+	<object class= "Image" type="gray" module="L1" source="WEIGHTS"
+			        	x="2" y="0" h="2" w="2" />
+	<object class= "Image" type="gray" module="L2" source="OUTPUT2"
+			        	x="0" y="2" h="2" w="2" />
+	<object class= "Image" type="gray" module="L2" source="WEIGHTS"
+			        	x="2" y="2" h="2" w="2" />
+	<object class= "Image" type="gray" module="L3" source="OUTPUT2"
+			        	x="0" y="4" h="2" w="2" />
+	<object class= "Image" type="gray" module="L3" source="WEIGHTS"
+			        	x="2" y="4" h="2" w="2" />
+	<object class= "Image" type="gray" module="L4" source="OUTPUT2"
+			        	x="0" y="6" h="2" w="2" />
+	<object class= "Image" type="gray" module="L4" source="WEIGHTS"
+			        	x="2" y="6" h="2" w="2" />
+</view>	
+</group>

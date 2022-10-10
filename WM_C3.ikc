@@ -1,0 +1,250 @@
+<?xml version="1.0"?>
+
+<group title="Working mem C3" description="Working mem setup for 3 CSOM modules">
+	<description type="text">
+		
+	Parameters:
+
+	Cx_rf_size
+	Cx_rf_inc
+	Cx_som_size
+	Cx_alpha
+	Cx_save_state
+	Cx_load_state
+	Cx_update_weights
+	Cx_filename
+	
+	input_type - CIFAR or MNIST 
+	input_filename - name of input file
+	input_size_x - width
+	input_size_y - height
+	input_channels - number of channels (3 for RBG)
+	input_instances - number of instances in file
+
+	</description>
+
+	<!-- Parameters -->
+	<parameter name="input_filename" module="ReadDataset" target="img_filename" />
+	<parameter name="input_type" module="ReadDataset" target="type" />
+	<parameter name="input_size_x" module="ReadDataset" target="size_x" />
+	<parameter name="input_size_y" module="ReadDataset" target="size_y" />
+	<parameter name="input_channels" module="ReadDataset" target="channels" />
+	<parameter name="input_instances" module="ReadDataset" target="instances" />
+	<parameter name="input_classes" module="ReadDataset" target="classcount" />
+	<!-- Modules -->
+
+
+
+		<module
+			class = "C3_inh_group"
+			name = "C3"
+            upstreams = "2"
+            downstreams = "3"
+		/>
+
+        <module
+            class = "Randomizer_Group"
+            name = "Rand"
+        />
+        <module
+            class = "Add"
+            name = "Add"
+        />
+
+        <module
+			class = "Constant"
+			name = "Inhibition1"
+			outputsize  = "4"
+			data  = "1 1 1 1"
+		/>
+		<module
+			class = "Constant"
+			name = "Inhibition2"
+			outputsize  = "4"
+			data  = "1 1 1 1"
+		/>
+		<module
+			class = "Constant"
+			name = "Inhibition3"
+			outputsize  = "4"
+			data  = "1 1 1 1"
+		/>
+
+        <!--Manipulators for working mem-->
+        <module
+            class = "Manipulator_Group"
+            name = "Manips1"
+        />
+        <module
+            class = "Manipulator_Group"
+            name = "Manips2"
+        />
+		<module
+			class="Dataset_Input_Group"
+			name="ReadDataset"
+            period="10"
+			_type="$type$"
+			_filename="$filename$"
+			_size_x="$sx$"
+			_size_y="$sy$"
+			_channels="$channels$"
+			_instances="$instances$"
+			_classcount="$classcount$"
+			randomize="true"
+			debug = "false"
+		/>
+	<!-- Connections -->
+	<connection sourcemodule = "ReadDataset" source = "OUTPUT" targetmodule = "C3" target = "INPUT1" delay="1"/>
+	<connection sourcemodule = "Rand" source = "SCALE_OUTPUT" targetmodule = "ReadDataset" target = "SCALE" delay="1"/>
+	<connection sourcemodule = "Rand" source = "ROTATION_OUTPUT" targetmodule = "ReadDataset" target = "ROTATION" delay="1"/>
+	<connection sourcemodule = "Rand" source = "TRANSX_OUTPUT" targetmodule = "ReadDataset" target = "TRANS_X" delay="1"/>
+	<connection sourcemodule = "Rand" source = "TRANSY_OUTPUT" targetmodule = "ReadDataset" target = "TRANS_Y" delay="1"/>
+
+    <connection sourcemodule = "Inhibition1" source = "OUTPUT" targetmodule = "C3" target = "INHIBITION1" />
+    <connection sourcemodule = "Inhibition2" source = "OUTPUT" targetmodule = "C3" target = "INHIBITION2" />
+    <connection sourcemodule = "Inhibition3" source = "OUTPUT" targetmodule = "C3" target = "INHIBITION3" />
+        
+
+    <connection sourcemodule = "C3" source = "RECONSTRUCTION1" targetmodule = "Manips1" target = "INPUT" />
+    <connection sourcemodule = "C3" source = "RECONSTRUCTION2" targetmodule = "Manips2" target = "INPUT" />
+    <connection sourcemodule = "Manips1" source = "OUTPUT" targetmodule = "Add" target = "INPUT1" />
+    <connection sourcemodule = "Manips2" source = "OUTPUT" targetmodule = "Add" target = "INPUT2" />
+    <connection sourcemodule = "Add" source = "OUTPUT" targetmodule = "C3" target = "INPUT2" />
+    <!-- View -->
+    <view name="Working memory">
+        <object class= "Image" type="gray" module="C3" source="RECONSTRUCTION1"
+			        	x="0" y="0" h="2" w="2" />
+        <object class= "Image" type="gray" module="C3" source="RECONSTRUCTION2"
+			        	x="1" y="0" h="2" w="2" />
+        <object class= "Image" type="gray" module="C3" source="RECONSTRUCTION3"
+			        	x="2" y="4" h="2" w="2" />
+        
+        <object title="Working memory" class= "Image" type="gray" module="Add" source="OUTPUT"
+			        	x="0" y="2" h="2" w="2" />
+
+        <object
+			   class="Slider"
+			   title="PCA_1"
+			   module = "Inhibition3"
+			   parameter = "data"
+			   xindex = "0"
+			   x="0" y="4" h="2"
+			  min="0.0" 
+			  max="1.5"
+			/>
+			<object
+			   class="Slider"
+			   title="PCA_2"
+			   module = "Inhibition3"
+			   parameter = "data"
+			   xindex = "1"
+			   x="1" y="4" h="2"
+			  min="0.0" 
+			  max="1.5"
+			/>
+			<object
+			   class="Slider"
+			   title="PCA_3"
+			   module = "Inhibition3"
+			   parameter = "data"
+			   xindex = "2"
+			   x="2" y="4" h="2"
+			  min="0.0" 
+			  max="1.5"
+			/>
+			<object
+			   class="Slider"
+			   title="PCA_4"
+			   module = "Inhibition3"
+			   parameter = "data"
+			   xindex = "3"
+			   x="3" y="4" h="2"
+			  min="0.0" 
+			  max="1.5"
+			/>
+			<!--L2 -->
+			<object
+			   class="Slider"
+			   title="PCA_1"
+			   module = "Inhibition2"
+			   parameter = "data"
+			   xindex = "0"
+			   x="0" y="6" h="2"
+			  min="0.0" 
+			  max="1.5"
+			/>
+			<object
+			   class="Slider"
+			   title="PCA_2"
+			   module = "Inhibition2"
+			   parameter = "data"
+			   xindex = "1"
+			   x="1" y="6" h="2"
+			  min="0.0" 
+			  max="1.5"
+			/>
+			<object
+			   class="Slider"
+			   title="PCA_3"
+			   module = "Inhibition2"
+			   parameter = "data"
+			   xindex = "2"
+			   x="2" y="6" h="2"
+			  min="0.0" 
+			  max="1.5"
+			/>
+			<object
+			   class="Slider"
+			   title="PCA_4"
+			   module = "Inhibition2"
+			   parameter = "data"
+			   xindex = "3"
+			   x="3" y="6" h="2"
+			  min="0.0" 
+			  max="1.5"
+			/>
+            <!--L3-->
+			<object
+			   class="Slider"
+			   title="PCA_1"
+			   module = "Inhibition1"
+			   parameter = "data"
+			   xindex = "0"
+			   x="0" y="8" h="2"
+			  min="0.0" 
+			  max="1.5"
+			/>
+			<object
+			   class="Slider"
+			   title="PCA_2"
+			   module = "Inhibition1"
+			   parameter = "data"
+			   xindex = "1"
+			   x="1" y="8" h="2"
+			  min="0.0" 
+			  max="1.5"
+			/>
+			<object
+			   class="Slider"
+			   title="PCA_3"
+			   module = "Inhibition1"
+			   parameter = "data"
+			   xindex = "2"
+			   x="2" y="8" h="2"
+			  min="0.0" 
+			  max="1.5"
+			/>
+			<object
+			   class="Slider"
+			   title="PCA_4"
+			   module = "Inhibition1"
+			   parameter = "data"
+			   xindex = "3"
+			   x="3" y="8" h="2"
+			  min="0.0" 
+			  max="1.5"
+			/>
+    </view>
+
+</group>
+<!-- end file -->

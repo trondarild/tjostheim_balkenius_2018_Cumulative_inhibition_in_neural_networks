@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+<script type="text/javascript">
+function load()
+{
+    document.getElementById( "l1-rf-size").value = 3
+    document.getElementById("l1-rf-inc").value = 1 
+    document.getElementById( "l2-rf-size").value = 3
+    document.getElementById("l2-rf-inc").value = 1
+    document.getElementById( "l3-rf-size").value = 3
+    document.getElementById("l3-rf-inc").value = 1
+    document.getElementById( "zoom-slider").value =30
+    update()
+    dozoom()
+
+}
+
+function update()
+{
+    // construct the filenames
+    dataset = document.getElementById( "dataset").value
+    if(dataset==1)
+        dataset = "CIFAR"
+    else if(dataset==2)
+        dataset = "COIL"
+
+    l1_rfsz = document.getElementById( "l1-rf-size").value
+    l1_rfinc = document.getElementById("l1-rf-inc").value
+    l2_rfsz = document.getElementById( "l2-rf-size").value
+    l2_rfinc = document.getElementById("l2-rf-inc").value
+    l3_rfsz = document.getElementById( "l3-rf-size").value
+    l3_rfinc = document.getElementById("l3-rf-inc").value
+    
+    l1_datname = "C1_weights_"+dataset+"_C1_alpha=0.0001_C1_rf_size="+l1_rfsz+"_C1_rf_inc="+l1_rfinc+"_C1_som_size=4.dat"
+    l1_imgname = "weight_images/" + l1_datname + ".png"
+    document.getElementById('l1').src = l1_imgname
+    document.getElementById('l1cmd').value= l1_datname
+
+
+    l2_datname = "C2_weights_"+dataset+"C1_alpha=0.0001_C1_rf_size="+l1_rfsz+"_C1_rf_inc="+l1_rfinc+"_C1_som_size=4_C2_alpha=0.0001_C2_rf_size="+l2_rfsz+"_C2_rf_inc="+l2_rfinc+"_C2_som_size=4.dat"
+    l2_imgname = "weight_images/" + l2_datname + ".png"
+    document.getElementById('l2').src = l2_imgname
+    document.getElementById('l2cmd').value= l2_datname
+
+    l3_datname = "C3_weights_"+dataset+"C1_alpha=0.0001_C1_rf_size="+l1_rfsz+"_C1_rf_inc="+l1_rfinc+"_C1_som_size=4C2_alpha=0.0001_C2_rf_size="+l2_rfsz+"_C2_rf_inc="+l2_rfinc+"_C2_som_size=4_C3_alpha=0.0001_C3_rf_size="+l3_rfsz+"_C3_rf_inc="+l3_rfinc+"_C3_som_size=4.dat"
+    l3_imgname = "weight_images/" + l3_datname + ".png"
+    document.getElementById('l3').src = l3_imgname
+    document.getElementById('l3cmd').value= l3_datname
+
+    document.getElementById( "dataset-val").innerHTML = dataset
+    document.getElementById( "l1-rf-size-val").innerHTML = l1_rfsz
+    document.getElementById("l1-rf-inc-val").innerHTML = l1_rfinc
+    document.getElementById( "l2-rf-size-val").innerHTML = l2_rfsz
+    document.getElementById("l2-rf-inc-val").innerHTML = l2_rfinc
+    document.getElementById( "l3-rf-size-val").innerHTML = l3_rfsz
+    document.getElementById("l3-rf-inc-val").innerHTML = l3_rfinc
+
+
+}
+
+function dozoom()
+{
+    zoom = document.getElementById( "zoom-slider").value
+    document.getElementById('l1').style = "width:" + zoom + "%"
+    document.getElementById('l2').style = "width:" + zoom + "%"
+    document.getElementById('l3').style = "width:" + zoom + "%"
+    document.getElementById( "zoom-val").innerHTML = zoom + "%"
+}
+
+</script>
+</head>
+
+<title>CSOM weights</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<body onload="load()">
+
+<!-- Sidebar -->
+<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%">
+  <h3 class="w3-bar-item">Menu</h3>
+  Dataset: <span id="dataset-val"></span><br>
+  <input onchange="update()" id="dataset" type="range" name="points" min="1" max="2"><span id="dataset-val"></span><br>
+  <br>
+    
+  L1 RF:  <input onchange="update()" id="l1-rf-size" type="range" name="points" step="2" min="3" max="7"><span id="l1-rf-size-val"></span><br>
+  L1 INC: <input onchange="update()" id="l1-rf-inc" type="range" name="points" step="2" min="1" max="5"><span id="l1-rf-inc-val"></span><br>
+  <br>
+
+  L2 RF:  <input onchange="update()" id="l2-rf-size" type="range" name="points" step="2" min="3" max="7"><span id="l2-rf-size-val"></span><br>
+  L2 INC: <input onchange="update()" id="l2-rf-inc" type="range" name="points" step="2" min="1" max="5"><span id="l2-rf-inc-val"></span><br>
+  <br>
+
+  L3 RF:  <input onchange="update()" id="l3-rf-size" type="range" name="points" step="2" min="3" max="7"><span id="l3-rf-size-val"></span><br>
+  L3 INC: <input onchange="update()" id="l3-rf-inc" type="range" name="points" step="2" min="1" max="5"><span id="l3-rf-inc-val"></span><br>
+  <br>
+
+  Zoom:     <input onchange="dozoom()" id="zoom-slider" type="range" name="points" step="10" min="10" max="100"><span id="zoom-val"></span><br>
+  
+</div>
+
+<!-- Page Content -->
+<div style="margin-left:25%" ">
+
+<div class="w3-container w3-teal">
+  <h1>CSOM Weights</h1>
+</div>
+
+<img id="l1" src="nothing.png" alt="Weight" ><br><br>
+<img id="l2" src="nothing.png" alt="Weight" ><br><br>
+<img id="l3" src="nothing.png" alt="Weight" ><br><br>
+
+<div class="w3-container">
+
+<p id="tst" >Filenames:</p>
+Layer 1 :<input type="text" id="l1cmd" size="40"><br>
+Layer 2 :<input type="text" id="l2cmd" size="40"><br>
+Layer 3 :<input type="text" id="l3cmd" size="40"><br>
+</div>
+
+</div>
+      
+</body>
+</html>

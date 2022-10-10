@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<group title="Example Addborder">
+	<!-- Modules -->
+		<module
+			class="AddBorder_Group"
+			name="AddBorder"
+			output_x="42"
+			output_y="42"
+			offset_x="5"
+			offset_y="5"
+		/>
+		<module
+			class="ReadDataset"
+			name="ReadDatasetCIFAR"
+			type="CIFAR"
+			classcount="10"
+			filename="../pics/cifar-10-batches-bin/data_batch_1.bin"
+			size_x="32"
+			size_y="32"
+			channels="3"
+			instances="10000"
+			randomize="true"
+			debug = "false"
+		/>
+	<!--Connections-->	
+		<connection sourcemodule = "ReadDatasetCIFAR" source = "INTENSITY" targetmodule = "AddBorder" target = "INPUT" />
+
+	<!-- View -->
+		<view>
+		</view>
+
+</group>

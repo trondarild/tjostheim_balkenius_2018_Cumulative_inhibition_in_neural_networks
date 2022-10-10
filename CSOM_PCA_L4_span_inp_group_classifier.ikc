@@ -1,0 +1,300 @@
+<?xml version="1.0"?>
+
+<group title="CSOM_PCA span Classifier Example">
+	
+		<!--Input-->
+            <_module
+                class = "InputPNG"
+                name = "Input"
+                filename = "../../../Models/pics/coil-100/thumbs/obj1%1d__10.png"
+                _filename = "../../../Models/pics/diff%02d_rz.jpg"
+                filecount = "9"
+                iterations = "1000000"
+            />
+            <module
+                class = "Randomizer_Group"
+                name = "Rand"
+                rand_scale_min="1"
+                rand_scale_max="1.0"
+                rand_scale_interval="1"
+                rand_rot_min="0"
+                rand_rot_max="0"
+                rand_rot_interval="1"
+                rand_trans_x_min="0"
+                rand_trans_x_max="0"
+                rand_trans_x_interval="1"
+                rand_trans_y_min="0"
+                rand_trans_y_max="0"
+                rand_trans_y_interval="1"
+            />
+            <_module
+                class="Dataset_Input_Group"
+                name="Input"
+                img_filename="../pics/coil-100/thumbs/"
+                type="COIL"
+                input_size_x="32"
+                input_size_y="32"
+                channels="3"
+                classes="100"
+                instances="72"
+                border_output="45"
+                border_offset="6"
+                randomize="true"
+                noise_sigma="0.05"
+                debug = "false"
+            />
+            <_module
+                class="Dataset_Input_Group"
+                name="Input"
+                img_filename="../pics/cifar-10-batches-bin/data_batch_all.bin"
+                type="CIFAR"
+                input_size_x="32"
+                input_size_y="32"
+                channels="3"
+                classes="10"
+                instances="50000"
+                border_output="45"
+                border_offset="6"
+                randomize="true"
+                noise_sigma="0.05"
+                debug = "false"
+            />
+            <module
+                class="Dataset_Input_Group"
+                name="Input"
+                img_filename="../pics/mnist/train-images-idx3-ubyte"
+                filename_labels="../pics/mnist/train-labels-idx1-ubyte"
+                type="MNIST"
+                input_size_x="28"
+                input_size_y="28"
+                channels="1"
+                classes="10"
+                instances="50000"
+                border_output="45"
+                border_offset="6"
+                randomize="true"
+                noise_sigma="0.05"
+                debug = "false"
+            />
+        
+        <!--Perceptual stack-->
+            <module
+                class = "CSOM_PCA"
+                name = "L1"
+                
+                rf_size_x = "3"
+                rf_size_y = "3"
+                rf_inc_x = "1"
+                rf_inc_y = "1"
+                som_size_x = "4"
+                som_size_y = "4"
+                block_size_x = "3"
+                block_size_y = "3"
+                span_size_x = "0"
+                span_size_y = "0"
+                
+                
+                alpha = "0.0001"
+                alpha_min = "0.0001"
+                alpha_max = "0.0001"
+                alpha_decay = "1"
+        
+                use_arbor = "no"
+                top_down = "yes"
+                    _filename="../../../Models/CSOM-paper/weights/csom/C1_weights_CIFAR_C1_alpha=0.0001_C1_rf_size=3_C1_rf_inc=1_C1_som_size=4.dat"
+                    filename="L1_span_test.dat"
+                    _filename="C1_weights_CIFAR_C1_alpha=0.0001_C1_rf_size=3_C1_rf_inc=1_C1_som_size=4.dat"
+                update_weights = "no"
+                save_state="no" 
+                load_state="yes" 
+                save_weights_only="yes"
+                load_weights_only="yes"
+            />
+
+            <module
+                class = "CSOM_PCA"
+                name = "L2"
+                rf_size_x = "8"
+                rf_size_y = "8"
+                rf_inc_x = "4"
+                rf_inc_y = "4"
+                som_size_x = "6"
+                som_size_y = "4"
+                block_size_x = "4"
+                block_size_y = "4"
+                span_size_x = "8"
+                span_size_y = "8"
+                
+                
+                alpha = "0.0001"
+                alpha_min = "0.0001"
+                alpha_max = "0.0001"
+                alpha_decay = "1"
+        
+                use_arbor = "no"
+                top_down = "yes"
+                    _filename="../../../Models/CSOM-paper/weights/csom/C1_weights_CIFAR_C1_alpha=0.0001_C1_rf_size=3_C1_rf_inc=1_C1_som_size=4.dat"
+                    filename="L2_span_test.dat"
+                update_weights = "no"
+                save_state="no" 
+                load_state="yes"
+                save_weights_only="yes" 
+                load_weights_only="yes" 
+            />
+            <module
+                class = "CSOM_PCA"
+                name = "L3"
+                
+                rf_size_x = "12"
+                rf_size_y = "8"
+                block_size_x = "6"
+                block_size_y = "4"
+                rf_inc_x = "6"
+                rf_inc_y = "4"
+                span_size_x = "30"
+                span_size_y = "20"
+                
+                som_size_x = "8"
+                som_size_y = "4"
+                
+                alpha = "0.0001"
+                alpha_min = "0.0001"
+                alpha_max = "0.0001"
+                alpha_decay = "1"
+        
+                use_arbor = "no"
+                top_down = "yes"
+                    _filename="../../../Models/CSOM-paper/weights/csom/C1_weights_CIFAR_C1_alpha=0.0001_C1_rf_size=3_C1_rf_inc=1_C1_som_size=4.dat"
+                    filename="L3_span_test.dat"
+                update_weights = "no"
+                save_state="no" 
+                load_state="yes"
+                save_weights_only="yes" 
+                load_weights_only="yes" 
+            />
+            <module
+                class = "CSOM_PCA"
+                name = "L4"
+                
+                rf_size_x = "16"
+                rf_size_y = "8"
+                block_size_x = "8"
+                block_size_y = "4"
+                rf_inc_x = "8"
+                rf_inc_y = "4"
+                span_size_x = "88"
+                span_size_y = "44"
+
+                som_size_x = "6"
+                som_size_y = "8"
+                
+                
+                
+                alpha = "0.0001"
+                alpha_min = "0.0001"
+                alpha_max = "0.0001"
+                alpha_decay = "1"
+        
+                use_arbor = "no"
+                top_down = "yes"
+                    _filename="../../../Models/CSOM-paper/weights/csom/C1_weights_CIFAR_C1_alpha=0.0001_C1_rf_size=3_C1_rf_inc=1_C1_som_size=4.dat"
+                    filename="L4_span_test_b.dat"
+                update_weights = "no"
+                save_state="no" 
+                load_state="yes"
+                save_weights_only="yes" 
+                load_weights_only="yes" 
+            />
+
+        <!--Classifier-->
+            <module
+                class = "Perceptron"
+                name = "ClassPerc"
+                learning_rule = "delta"
+                activation_type = "tanh" 
+                learning_type = "instant"
+                learning_rate = "0.001"
+                correct_average_size = "50"
+                filename = "perc_L4_span_test.dat"
+                save_state = "yes"
+                load_state = "no"
+            />	
+
+            <module
+                class="Ones"
+                name="ClassPercTrainOn"
+                size_x="1"
+                size_y="1"
+                value="1"
+            />
+            <module
+                class="Average"
+                name="Avg"
+                type="SMA"
+                window_size="100"
+                _termination_criterion="0.080"
+            />
+            <module
+                class = "OutputFile"
+                name = "OutputFile"
+                filename = "stat_data/L4_span_classifier_mnist.output" 
+                period="100" 
+                >
+                <column name = "CORRECT" decimals="4"/>   
+            </module> 
+
+        <!--Connections-->
+            <connection sourcemodule = "Rand" source = "SCALE_OUTPUT"    targetmodule = "Input" target = "SCALE" delay="1"/>
+            <connection sourcemodule = "Rand" source = "ROTATION_OUTPUT" targetmodule = "Input" target = "ROTATION" delay="1"/>
+            <connection sourcemodule = "Rand" source = "TRANSX_OUTPUT"   targetmodule = "Input" target = "TRANS_X" delay="1"/>
+            <connection sourcemodule = "Rand" source = "TRANSY_OUTPUT"   targetmodule = "Input" target = "TRANS_Y" delay="1"/>
+
+            <!--Perception-->    
+            <connection sourcemodule = "Input" source = "OUTPUT" targetmodule = "L1" target = "INPUT" />
+            <connection sourcemodule = "L1" source = "OUTPUT" targetmodule = "L2" target = "INPUT" delay="1" />
+            <connection sourcemodule = "L2" source = "OUTPUT" targetmodule = "L3" target = "INPUT" delay="1" />
+            <connection sourcemodule = "L3" source = "OUTPUT" targetmodule = "L4" target = "INPUT" delay="1" />
+            
+            <connection sourcemodule = "L4" source = "OUTPUT" targetmodule = "L4" target = "TOP_DOWN" delay="1" />
+            
+            <connection sourcemodule = "L4" source = "RECONSTRUCTION" targetmodule = "L3" target = "TOP_DOWN" delay="1" />
+            <connection sourcemodule = "L3" source = "RECONSTRUCTION" targetmodule = "L2" target = "TOP_DOWN" delay="1" />
+            <connection sourcemodule = "L2" source = "RECONSTRUCTION" targetmodule = "L1" target = "TOP_DOWN" delay="1" />
+            
+            <!--Classification-->
+            <connection sourcemodule = "Input" source = "CLASS" targetmodule = "ClassPerc" target = "T_TARGET" delay="10"/>
+            <connection sourcemodule = "ClassPercTrainOn" source = "OUTPUT" targetmodule = "ClassPerc" target = "TRAIN" delay="1"/>
+            <connection sourcemodule = "L4" source = "OUTPUT" targetmodule = "ClassPerc" target = "INPUT" delay="1"/>
+            <connection sourcemodule = "L4" source = "OUTPUT" targetmodule = "ClassPerc" target = "T_INPUT" delay="1"/>
+            <connection sourcemodule = "ClassPerc" source = "CORRECT" targetmodule = "Avg" target = "INPUT" delay="1"/>
+            <connection sourcemodule = "ClassPerc" source = "CORRECT" targetmodule = "OutputFile" target = "CORRECT" delay="1"/>
+            
+        <!--View-->
+        <view name="View">
+			<object class= "Image" type="gray" module="Input" source="OUTPUT"
+			                                        x="0" y="0" h="2" w="2" />
+ 			<object class= "Image" type="gray" module="L1" source="RECONSTRUCTION"
+ 			                                      x="2" y="0" h="2" w="2" />
+        	<object class= "Image" type="gray" module="L1" source="WEIGHTS"
+ 			                                      x="4" y="0" h="2" w="2" />
+            <object class= "Image" type="gray" module="L2" source="WEIGHTS"
+ 			                                      x="0" y="2" h="2" w="2" />
+            <object class= "Image" type="gray" module="L3" source="WEIGHTS"
+ 			                                      x="2" y="2" h="2" w="2" />
+            <object class= "Image" type="gray" module="L4" source="WEIGHTS"
+ 			                                      x="4" y="2" h="2" w="2" />
+            <object class= "Plot"  module="Avg" source="OUTPUT"
+ 			                                      x="0" y="4" h="2" w="2" />
+			<object
+                class="Table" 
+                module="Avg"
+                source="OUTPUT"
+                font_size="40"
+                decimals="3"
+                x="2"
+                y="4" h="2" w="2" 
+            />
+		</view>
+
+</group>
+ 

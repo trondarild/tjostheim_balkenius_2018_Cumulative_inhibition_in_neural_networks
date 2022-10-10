@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">
+
+/*
+    TODO:
+    * add generation of callstring from gui vals - fix actual rf and inc params
+    * add support for inc, draw as cascades
+
+*/
+
+function load(){
+    document.getElementById( "l1-rf-size").value = 3
+    document.getElementById("l1-rf-inc").value = 1 
+    document.getElementById( "l2-rf-size").value = 3
+    document.getElementById("l2-rf-inc").value = 1
+    document.getElementById( "l3-rf-size").value = 3
+    document.getElementById("l3-rf-inc").value = 1
+    document.getElementById( "zoom-slider").value =10
+    update();
+}
+
+function drawLayer(x0, y0, num, w, h, contx){
+    var x=x0;
+    var y=y0;
+    for(i=0;i<num;i++){
+        contx.rect(x,y, w, h);
+        x+=w;
+    }
+}
+
+function update(){
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    // colour of input layer
+    ctx.fillStyle="#e0e0d1";
+    ctx.strokeStyle="#000000";
+    ctx.clearRect(0, 0, c.width, c.height);
+
+    var dataset = document.getElementById( "dataset").value
+    var imgwidth = 32
+    var x_start=10;
+    var y_start=10;
+    var sz = parseInt(document.getElementById( "zoom-slider").value);
+    var yspace = 3 * sz
+
+    if(dataset==1){
+        dataset = "CIFAR"
+        imgwidth = 32
+    } else if(dataset==2){
+        dataset = "COIL"
+        imgwidth = 52
+    }
+    
+    var l1somsz = 4;    
+    var l2somsz = 4;
+    var l3somsz = 4;
+    var l1rf = parseInt(document.getElementById( "l1-rf-size").value);
+    var l1rfinc = parseInt(document.getElementById("l1-rf-inc").value);
+    var l2rf = parseInt(document.getElementById( "l2-rf-size").value);
+    var l2rfinc = parseInt(document.getElementById("l2-rf-inc").value);
+    var l3rf = parseInt(document.getElementById( "l3-rf-size").value);
+    var l3rfinc = parseInt(document.getElementById("l3-rf-inc").value);
+
+    
+    // draw base img
+    var x=x_start;
+    var y=y_start;
+    ctx.beginPath();
+
+    for (i=0; i<imgwidth;i++){
+        ctx.rect(x,y, sz, sz);
+        x+=sz
+    }
+    
+    ctx.fill()
+    
+    //l1rf=5
+    x=x_start;
+    y=y_start+yspace;
+    var w = l1rf
+    drawLayer(x, y, imgwidth/w-1, w*sz, sz, ctx)
+
+    //l2rf=5
+    x=x_start;
+    y=y_start+yspace*2;
+    // draw first layer
+    var w = l2rf*l1rf
+    drawLayer(x, y, imgwidth/w-1, w*sz, sz, ctx)
+
+    // third layer
+    //l3rf=2
+    x=x_start;
+    y=y_start+yspace*3;
+    var w = l3rf*l2rf*l1rf
+    drawLayer(x, y, imgwidth/w-1, w*sz, sz, ctx)
+
+    ctx.stroke();
+    //ctx.fillStyle="#ffffff";
+    //ctx.fill();
+    ctx.closePath();
+
+    updateGuiVals();
+    callstrings = generateCallstring(
+        dataset,
+        l1somsz, 
+        l1rf, 
+        l1rfinc, 
+        l2somsz, 
+        l2rf, 
+        l2rfinc, 
+        l3somsz, 
+        l3rf, 
+        l3rfinc);
+    // set vals in spans
+    document.getElementById("l1-callstring").value = callstrings[0];
+    document.getElementById("l2-callstring").value = callstrings[1];
+    document.getElementById("l3-callstring").value = callstrings[2];
+
+    
+
+}
+
+/** Updates gui values for controls
+*/
+function updateGuiVals(){
+    dataset = document.getElementById( "dataset").value
+    l1_rfsz = document.getElementById( "l1-rf-size").value
+    l1_rfinc = document.getElementById("l1-rf-inc").value
+    l2_rfsz = document.getElementById( "l2-rf-size").value
+    l2_rfinc = document.getElementById("l2-rf-inc").value
+    l3_rfsz = document.getElementById( "l3-rf-size").value
+    l3_rfinc = document.getElementById("l3-rf-inc").value
+
+    document.getElementById( "dataset-val").innerHTML = dataset
+    document.getElementById( "l1-rf-size-val").innerHTML = l1_rfsz
+    document.getElementById("l1-rf-inc-val").innerHTML = l1_rfinc
+    document.getElementById( "l2-rf-size-val").innerHTML = l2_rfsz
+    document.getElementById("l2-rf-inc-val").innerHTML = l2_rfinc
+    document.getElementById( "l3-rf-size-val").innerHTML = l3_rfsz
+    document.getElementById("l3-rf-inc-val").innerHTML = l3_rfinc
+}
+
+/** Generates an ikaros callstring that can be copied and pasted to command line
+Returns an array of callstrings for [l1, l2, l3]
+*/
+function generateCallstring(
+    dataset,
+    l1_somsz, 
+    l1_rfsz, 
+    l1_rfinc, 
+    l2_somsz, 
+    l2_rfsz, 
+    l2_rfinc, 
+    l3_somsz, 
+    l3_rfsz, 
+    l3_rfinc){
+
+    var retval = [];
+    var l1_datname = "C1_weights_"+dataset+"_C1_alpha=0.0001_C1_rf_size="+l1_rfsz+"_C1_rf_inc="+l1_rfinc+"_C1_som_size=4.dat";
+    var l2_datname = "C2_weights_"+dataset+"C1_alpha=0.0001_C1_rf_size="+l1_rfsz+"_C1_rf_inc="+l1_rfinc+"_C1_som_size=4_C2_alpha=0.0001_C2_rf_size="+l2_rfsz+"_C2_rf_inc="+l2_rfinc+"_C2_som_size=4.dat";
+    var l3_datname = "C3_weights_"+dataset+"C1_alpha=0.0001_C1_rf_size="+l1_rfsz+"_C1_rf_inc="+l1_rfinc+"_C1_som_size=4C2_alpha=0.0001_C2_rf_size="+l2_rfsz+"_C2_rf_inc="+l2_rfinc+"_C2_som_size=4_C3_alpha=0.0001_C3_rf_size="+l3_rfsz+"_C3_rf_inc="+l3_rfinc+"_C3_som_size=4.dat";
+    
+    // TODO add rf size and inc values
+    var l1_callstr = './ikaros ../Source/UserModules/Models/CSOM-paper/pretrain_C1.ikc  C1_load_state="no" C1_save_state="yes" C1_update_weights="yes" rand_scale_min="0.5" rand_scale_max="2.0" rand_scale_interval="1" rand_rot_min="-90" rand_rot_max="90" rand_rot_interval="1" rand_trans_x_min="-5" rand_trans_x_max="5" rand_trans_x_interval="1" rand_trans_y_min="-5" rand_trans_y_max="5" rand_trans_y_interval="1" C1_filename="weights/csom/' + l1_datname + '"  input_filename="../pics/coil-100/thumbs/" input_type="COIL" input_size_x="32" input_size_y="32" input_channels="3" input_classes="100" input_instances="7200" border_output="52" border_offset="10" C1_alpha="0.0001" C1_rf_size="5" C1_rf_inc="1" C1_som_size="4" error_filename="stat_data/csom/error_C1_COIL_C1_alpha=0.0001_C1_rf_size=5_C1_rf_inc=1_C1_som_size=4_4-18.out"';
+    // TODO add rf size and inc values
+    var l2_callstr = './ikaros ../Source/UserModules/Models/CSOM-paper/pretrain_C2.ikc  C1_load_state="yes" C1_save_state="no" C1_update_weights="no" C2_load_state="no" C2_save_state="yes" C2_update_weights="yes" rand_scale_min="0.5" rand_scale_max="2.0" rand_scale_interval="1" rand_rot_min="-90" rand_rot_max="90" rand_rot_interval="1" rand_trans_x_min="-5" rand_trans_x_max="5" rand_trans_x_interval="1" rand_trans_y_min="-5" rand_trans_y_max="5" rand_trans_y_interval="1" C1_filename="weights/csom/C1_weights_COIL_C1_alpha=0.0001_C1_rf_size=3_C1_rf_inc=3_C1_som_size=4.dat" C2_filename="weights/csom/C2_weights_COILC1_alpha=0.0001_C1_rf_size=3_C1_rf_inc=3_C1_som_size=4_C2_alpha=0.0001_C2_rf_size=5_C2_rf_inc=1_C2_som_size=4.dat"  input_filename="../pics/coil-100/thumbs/" input_type="COIL" input_size_x="32" input_size_y="32" input_channels="3" input_classes="100" input_instances="7200" border_output="52" border_offset="10" C1_alpha="0.0001" C1_rf_size="3" C1_rf_inc="3" C1_som_size="4" C2_alpha="0.0001" C2_rf_size="20" C2_rf_inc="4" C2_som_size="4" error_filename="stat_data/csom/error_C2_COIL_C1_alpha=0.0001_C1_rf_size=3_C1_rf_inc=3_C1_som_size=4_C2_alpha=0.0001_C2_rf_size=5_C2_rf_inc=1_C2_som_size=4.out"';
+    // TODO add rf size and inc values
+    var l3_callstr = './ikaros ../Source/UserModules/Models/CSOM-paper/pretrain_C3.ikc  C1_load_state="yes" C1_save_state="no" C1_update_weights="no" C2_load_state="yes" C2_save_state="no" C2_update_weights="no" C3_load_state="yes" C3_save_state="yes" C3_update_weights="yes" rand_scale_min="0.5" rand_scale_max="2.0" rand_scale_interval="1" rand_rot_min="-90" rand_rot_max="90" rand_rot_interval="1" rand_trans_x_min="-5" rand_trans_x_max="5" rand_trans_x_interval="1" rand_trans_y_min="-5" rand_trans_y_max="5" rand_trans_y_interval="1" C1_filename="weights/csom/'+ l1_datname +'" C2_filename="weights/csom/' + l2_datname + '" C3_filename="weights/csom/C3_weights_COILC1_alpha=0.0001_C1_rf_size=3_C1_rf_inc=1_C1_som_size=4C2_alpha=0.0001_C2_rf_size=3_C2_rf_inc=1_C2_som_size=4_C3_alpha=0.0001_C3_rf_size=3_C3_rf_inc=1_C3_som_size=4.dat"  input_filename="../pics/coil-100/thumbs/" input_type="COIL" input_size_x="32" input_size_y="32" input_channels="3" input_classes="100" input_instances="7200" border_output="52" border_offset="10" C1_alpha="0.0001" C1_rf_size="3" C1_rf_inc="1" C1_som_size="4" C2_alpha="0.0001" C2_rf_size="12" C2_rf_inc="4" C2_som_size="4" C3_alpha="0.0001" C3_rf_size="12" C3_rf_inc="4" C3_som_size="4" error_filename="stat_data/csom/error_C3_COIL_C1_alpha=0.0001_C1_rf_size=3_C1_rf_inc=1_C1_som_size=4_C2_alpha=0.0001_C2_rf_size=3_C2_rf_inc=1_C2_som_size=4_C3_alpha=0.0001_C3_rf_size=3_C3_rf_inc=1_C3_som_size=4.out"'
+    retval = [l1_callstr, l2_callstr, l3_callstr];
+    return retval;
+
+}
+</script> 
+</head>
+<title>CSOM size tool</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<body onload="load()">
+
+
+<!-- Sidebar -->
+<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%">
+  <h3 class="w3-bar-item">Menu</h3>
+  Dataset: <span id="dataset-val"></span><br>
+  <input onchange="update()" id="dataset" type="range" name="points" min="1" max="2"><span id="dataset-val"></span><br>
+  <br>
+    
+  L1 RF:  <input onchange="update()" id="l1-rf-size" type="range" name="points" step="1" min="2" max="10"><span id="l1-rf-size-val"></span><br>
+  L1 INC: <input onchange="update()" id="l1-rf-inc" type="range" name="points" step="1" min="1" max="5"><span id="l1-rf-inc-val"></span><br>
+  <br>
+
+  L2 RF:  <input onchange="update()" id="l2-rf-size" type="range" name="points" step="1" min="2" max="10"><span id="l2-rf-size-val"></span><br>
+  L2 INC: <input onchange="update()" id="l2-rf-inc" type="range" name="points" step="2" min="1" max="5"><span id="l2-rf-inc-val"></span><br>
+  <br>
+
+  L3 RF:  <input onchange="update()" id="l3-rf-size" type="range" name="points" step="1" min="2" max="10"><span id="l3-rf-size-val"></span><br>
+  L3 INC: <input onchange="update()" id="l3-rf-inc" type="range" name="points" step="2" min="1" max="5"><span id="l3-rf-inc-val"></span><br>
+  <br>
+
+  Zoom:     <input onchange="update()" id="zoom-slider" type="range" name="points" step="10" min="10" max="100"><span id="zoom-val"></span><br>
+  
+</div>
+
+<!-- Page Content -->
+<div style="margin-left:25%" ">
+
+    <div class="w3-container w3-teal">
+    <h1>CSOM Size tool</h1>
+    </div>
+
+    <div class="w3-container">
+    <canvas id="myCanvas" width="600" height="200">
+    Your browser does not support the HTML5 canvas tag.
+    </canvas>
+    </div>
+
+    <div class="w3-container">
+    <p>Callstring:</p>
+    Layer 1: <input type="text" id="l1-callstring" size="40" ></span><br>
+    Layer 2: <input type="text" id="l2-callstring" size="40" ></span><br>
+    Layer 3: <input type="text" id="l3-callstring" size="40" ></span><br>
+    </div>
+
+</div>
+</body>
+</html>

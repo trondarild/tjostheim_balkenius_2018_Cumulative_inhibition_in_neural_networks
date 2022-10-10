@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+
+<group title="Dataset Input group">
+	<description type="text">
+		Input stage for experiments with dataset reader
+	</description>
+
+	<!--Parameters-->
+		<parameter name="img_filename" module="Input" target="filename" />
+		<parameter name="tickduty" module="ChangeTick" target="tickduty" default="1" />
+		<parameter name="shift" module="ChangeTick" target="shift" default="0" />
+		<parameter name="shift" module="Input" target="phase" default="0" />
+		<parameter name="border_output" module="AddBorder" target="output_x" default="0" />
+		<parameter name="border_output" module="AddBorder" target="output_y" default="0" />
+		<parameter name="border_offset" module="AddBorder" target="offset_x" default="0" />
+		<parameter name="border_offset" module="AddBorder" target="offset_y" default="0" />
+
+
+	<!--Input-->
+		<input name="SCALE" targetmodule="ImgScale" target="X" />
+		<input name="SCALE" targetmodule="ImgScale" target="Y" />
+
+		<input name="ROTATION" targetmodule="ImgRotation" target="ANGLE" />		
+
+		<input name="TRANS_X" targetmodule="ImgTranslation" target="X" />
+		<input name="TRANS_Y" targetmodule="ImgTranslation" target="Y" />
+
+	<!--Output-->
+		<output name="OUTPUT" sourcemodule = "Noise" source = "OUTPUT" />
+		<output name="CLASS" sourcemodule = "Input" source = "CLASS" />
+		<output name="SCALE_OUTPUT" sourcemodule = "ImgScale" source = "OUTPUT" />
+		<output name="ROTATION_OUTPUT" sourcemodule = "ImgRotation" source = "OUTPUT" />
+		<output name="TRANSLATION_OUTPUT" sourcemodule = "ImgTranslation" source = "OUTPUT" />
+
+		<output name="IMG_SYNC" sourcemodule = "ChangeTick" source = "OUTPUT" />
+
+	<!-- Modules -->
+	<module
+			class="AddBorder_Group"
+			name="AddBorder"
+			_output_x="32"
+			_output_y="32"
+			_offset_x="0"
+			_offset_y="0"
+		/>
+		<module
+			class="ReadDataset"
+			name="Input"
+			_classcount="10"
+			_type="CIFAR"
+			_filename="../pics/cifar-10-batches-bin/data_batch_1.bin"
+			_size_x="32"
+			_size_y="32"
+			_channels="3"
+			_instances="10000"
+			randomize="true"
+			debug = "false"
+		/>
+		
+	
+		<_module
+         class = "InputJPEG"
+         name = "Input"
+         _filename = "../letters/uppercase/uppercase%02d_rz.yyy"
+         _filecount = "24"
+         iterations = "999000"
+         _period = "10"
+         randomize = "yes"
+      />
+      <module
+			class="MatrixScale"
+			name="ImgScale"
+			debug = "no"
+      />
+      <module
+			class="MatrixRotation"
+			name="ImgRotation"
+			debug = "no"
+      />
+      <module
+			class="MatrixTranslation"
+			name="ImgTranslation"
+			debug = "no"
+      />
+      <module
+			class = "Noise"
+			name = "Noise"
+			sigma = "0.1"
+      />
+      <module
+			class = "FunctionGenerator"
+			name = "ChangeTick"
+			type = "ticksquare"
+			_basetime = "10"
+			amplitude = "1.0"
+			_tickduty = "1"
+			_shift = "0.0"
+		/>
+	<!--Connections-->	
+			<connection sourcemodule = "Input" source = "INTENSITY" targetmodule = "AddBorder" target = "INPUT" />
+		<!--To ImgScale-->
+        <connection sourcemodule = "AddBorder" source = "OUTPUT" targetmodule = "ImgScale" target = "INPUT"  delay="1"/>
+
+      <!--To ImgRotation-->
+        <connection sourcemodule = "ImgScale" source = "OUTPUT" targetmodule = "ImgRotation" target = "INPUT"  delay="1"/>
+        
+      <!--To ImgTranslation-->
+        <connection sourcemodule = "ImgRotation" source = "OUTPUT" targetmodule = "ImgTranslation" target = "INPUT"  delay="1"/>
+
+      <!--To Noise-->
+        <connection sourcemodule = "ImgTranslation" source = "OUTPUT" targetmodule = "Noise" target = "INPUT" />
+	<!-- View -->
+		<view title="Input group">
+			<object class= "Image" type="gray" module="Input" source="INTENSITY" x="0" y="0" h="2" w="2" />
+			<object class= "Image" type="gray" module="ImgScale" source="OUTPUT" x="0" y="2" h="2" w="2" />
+			<object class= "Image" type="gray" module="ImgRotation" source="OUTPUT" x="2" y="2" h="2" w="2" />
+			<object class= "Image" type="gray" module="ImgTranslation" source="OUTPUT" x="0" y="4" h="2" w="2" />
+			<object class= "Image" type="gray" module="Noise" source="OUTPUT" x="2" y="4" h="2" w="2" />
+		</view>
+		<files>
+    		<file>Input_Group.ikc</file> <!--Use name="Default_Speed" in calling file-->
+    </files>
+</group>

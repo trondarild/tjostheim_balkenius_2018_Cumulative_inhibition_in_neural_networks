@@ -1,0 +1,20 @@
+      <module
+			class = "CSOM_PCA"
+			name = "$name$"
+         output_type = "combined"
+         use_arbor = "no"
+         
+         _rf_size_x = "5"
+         _rf_size_y = "5"
+         _rf_inc_x = "2"
+         _rf_inc_y = "2"
+         _som_size_x = "3"
+         _som_size_y = "3"
+      
+         _alpha = "0.0001"
+         _filename = "weights/experiment_1a_l1.dat"
+         _save_state = "yes"
+         _load_state = "yes"
+         save_weights_only="yes"
+        load_weights_only="yes"
+      />

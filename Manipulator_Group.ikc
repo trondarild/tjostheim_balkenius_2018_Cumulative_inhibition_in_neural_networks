@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+
+<group title="Manipulator group">
+    <!--IO-->
+    <input name="INPUT" targetmodule="ImgScale" target="INPUT">
+    <output name="OUTPUT" sourcemodule="ImgTranslation" source="OUTPUT">
+
+	<!-- Modules -->
+    <module
+    	class = "Constant"
+        name = "Scaleval"
+        outputsize  = "1"
+        data  = "0"
+    />
+    <module
+    	class = "Constant"
+        name = "Rotval"
+        outputsize  = "1"
+        data  = "0"
+    />
+    <module
+    	class = "Constant"
+        name = "Transvalx"
+        outputsize  = "1"
+        data  = "0"
+    />    
+    <module
+    	class = "Constant"
+        name = "Transvaly"
+        outputsize  = "1"
+        data  = "0"
+    />    
+
+    <module
+        class="MatrixScale"
+        name="ImgScale"
+        debug = "no"
+    />
+    <module
+        class="MatrixRotation"
+        name="ImgRotation"
+        debug = "no"
+    />
+    <module
+        class="MatrixTranslation"
+        name="ImgTranslation"
+        debug = "no"
+    />
+
+    <!--Connections-->	
+        <connection sourcemodule = "Scaleval" source = "OUTPUT" targetmodule = "ImgScale" target = "X" />
+        <connection sourcemodule = "Scaleval" source = "OUTPUT" targetmodule = "ImgScale" target = "Y" />
+
+        <connection sourcemodule = "Rotval" source = "OUTPUT" targetmodule = "ImgRotation" target = "ANGLE" />
+
+        <connection sourcemodule = "Transvalx" source = "OUTPUT" targetmodule = "Target" target = "X" />
+        <connection sourcemodule = "Transvaly" source = "OUTPUT" targetmodule = "Target" target = "Y" />
+    <!-- View -->
+    
+    <view name="Manipulator view">
+        <object
+            class="Slider"
+            title="Scale"
+            module = "Scaleval"
+            parameter = "data"
+            xindex = "0"   x="0" y="0" h="2"  min="0.1" 
+            max="1.5"
+        />
+        <object
+            class="Slider"
+            title="Rotation"
+            module = "Rotval"
+            parameter = "data"
+            xindex = "0"   x="1" y="0" h="2"  min="-90" 
+            max="90"
+        />
+        <object
+            class="Slider"
+            title="Trans x"
+            module = "Transvalx"
+            parameter = "data"
+            xindex = "0"   x="2" y="0" h="2"  min="-5" 
+            max="5"
+        />
+        <object
+            class="Slider"
+            title="Trans y"
+            module = "Transvaly"
+            parameter = "data"
+            xindex = "0"   x="3" y="0" h="2"  min="-5" 
+            max="5"
+        />
+    </view>
+
+</group>

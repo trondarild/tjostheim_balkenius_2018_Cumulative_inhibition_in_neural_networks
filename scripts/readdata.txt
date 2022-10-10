@@ -1,0 +1,13 @@
+		<module
+			class="Dataset_Input_Group"
+			name="ReadDataset"
+			_type="$type$"
+			_filename="$filename$"
+			_size_x="$sx$"
+			_size_y="$sy$"
+			_channels="$channels$"
+			_instances="$instances$"
+			_classcount="$classcount$"
+			randomize="true"
+			debug = "false"
+		/>

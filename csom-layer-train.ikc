@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+
+<group title="CSOM layer train">
+<description type="text">
+    Allows sequential training of arbitrarily deep 
+    CSOM stacks by loading and saving inputs and outputs
+    of CSOM module. Hyperparameters set in command line
+</description>
+<!-- Parameters-->
+    <parameter name="in_filename" module="IN" target="filename" default="" />
+    <parameter name="in_size_x" module="IN" target="size_x" default="0" />
+    <parameter name="in_size_y" module="IN" target="size_y" default="0" />
+    
+    <parameter name="border_output_x" module="BORDER" target="output_x" default="0" />
+    <parameter name="border_output_y" module="BORDER" target="output_y" default="0" />
+    <parameter name="border_offset_x" module="BORDER" target="offset_x" default="0" />
+    <parameter name="border_offset_y" module="BORDER" target="offset_y" default="0" />
+    
+    <parameter name="csom_filename" module="CSOM" target="filename" default="" />
+<!-- Modules -->
+    <module 
+        class = "InputPNG" 
+        name = "IN" 
+	    _filename = "../../../../../../Examples/Media/grayrobot.png" 
+        _filecount="100"
+	    iterations = "100000"
+        random="yes" 
+        _size_x="32"
+        _size_y="32"
+	/>
+    <module
+        class="AddBorder_Group"
+        name="BORDER"
+        _output_x="1"
+        _output_y="1"
+        _offset_x="1"
+        _offset_y="1"
+    />
+    <module
+        class = "CSOM_PCA"
+        name = "CSOM"
+        
+        _rf_size_x = "3"
+        _rf_size_y = "3"
+        _rf_inc_x = "1"
+        _rf_inc_y = "1"
+        _som_size_x = "4"
+        _som_size_y = "4"
+        _block_size_x = "3"
+        _block_size_y = "3"
+        _span_size_x = "0"
+        _span_size_y = "0"
+        
+        alpha = "0.0001"
+        alpha_min = "0.0001"
+        alpha_max = "0.0001"
+        alpha_decay = "1"
+
+        use_arbor = "no"
+        top_down = "yes"
+        _filename="L1_span_test.dat"
+            
+        _update_weights = "yes"
+        _save_state="no" 
+        _load_state="yes" 
+        save_weights_only="yes"
+        load_weights_only="yes"
+    />
+
+    
+<!--Connections-->	
+    <connection sourcemodule = "IN" source = "INTENSITY" targetmodule = "BORDER" target = "INPUT" />
+    <connection sourcemodule = "BORDER" source = "OUTPUT" targetmodule = "CSOM" target = "INPUT" />
+    
+    <connection sourcemodule = "CSOM" source = "OUTPUT" targetmodule = "CSOM" target = "TOP_DOWN" />
+<!-- View -->
+<view>
+
+    <object class= "Image" type="gray" module="BORDER" source="OUTPUT"
+			                                        x="0" y="0" h="2" w="2" />
+    <object class= "Image" type="gray" module="CSOM" source="RECONSTRUCTION"
+                                                    x="2" y="0" h="2" w="2" />
+    <object class= "Image" type="gray" module="CSOM" source="WEIGHTS"
+ 			                                      x="4" y="0" h="2" w="2" />
+</view>
+                                                                
+</group>

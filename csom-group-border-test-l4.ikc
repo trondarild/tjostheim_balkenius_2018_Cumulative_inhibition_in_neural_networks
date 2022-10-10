@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+
+<group title="Example">
+<!-- Modules -->
+<module 
+    class = "InputPNG" 
+    name = "IN" 
+    filename="../pics/cifar_train/%05d.png"
+    filecount="50000"
+    iterations = "100000"
+    random="yes" 
+    size_x="32"
+    size_y="32"
+/>
+<module
+    class="C4_group"
+    name="C_group"
+    C1_rf_inc_x="1"
+    C1_rf_inc_y="1"
+    C1_span_size_x="0"
+    C1_span_size_y="0"
+    C1_rf_size_x="3"
+    C1_rf_size_y="3"
+    C1_filename="weights/L1_rfx=3_rfy=3_incx=1_incy=1_somx=9_somy=3_block=3_span=0.dat"
+    C1_save_state="no"
+    C1_load_state="yes"
+    C1_som_size_x="9"
+    C1_som_size_y="3"
+    C1_block_size_x="3"
+    C1_block_size_y="3"
+    C1_alpha="0.0001"
+    C1_update_weights="no"
+
+    C1_output_x="342"
+    C1_output_y="114"
+    C1_offset_x="36"
+    C1_offset_y="12"
+    C1_x0="36" 
+    C1_x1="306" 
+    C1_y0="12" 
+    C1_y1="102"
+
+    C2_rf_inc_x="9"
+    C2_rf_inc_y="3"
+    C2_span_size_x="18"
+    C2_span_size_y="6"
+    C2_rf_size_x="27"
+    C2_rf_size_y="9"
+    C2_filename="weights/L2_rfx=27_rfy=9_incx=9_incy=3_somx=12_somy=6_blockx=9_blocky=3_spanx=18_spany=6.dat"
+    C2_save_state="no"
+    C2_load_state="yes"
+    C2_som_size_x="12"
+    C2_som_size_y="6"
+    C2_block_size_x="9"
+    C2_block_size_y="3"
+    C2_alpha="0.0001"
+    C2_update_weights="no"
+
+    C2_output_x="504"
+    C2_output_y="252"
+    C2_offset_x="60"
+    C2_offset_y="30"
+    C2_x0="60" 
+    C2_x1="444" 
+    C2_y0="30" 
+    C2_y1="222"
+
+    C3_rf_size_x="36"
+    C3_rf_size_y="18"
+    C3_rf_inc_x="12"
+    C3_rf_inc_y="6"
+    C3_som_size_x="14"
+    C3_som_size_y="7"
+    C3_block_size_x="12"
+    C3_block_size_y="6"
+    C3_span_size_x="60"
+    C3_span_size_y="30"
+    C3_filename="weights/L3_rfx=48_rfy=24_incx=12_incy=6_somx=16_somy=8_blockx=12_blocky=6_spanx=60_spany=30.dat"
+    C3_save_state="no"
+    C3_load_state="yes"
+    C3_alpha="0.0001"
+    C3_update_weights="no"
+
+    C3_output_x="532"
+    C3_output_y="266"
+    C3_offset_x="56"
+    C3_offset_y="28"
+    C3_x0="56" 
+    C3_x1="476" 
+    C3_y0="28" 
+    C3_y1="238"
+
+    C4_rf_size_x="28"
+    C4_rf_size_y="14"
+    C4_rf_inc_x="14"
+    C4_rf_inc_y="7"
+    C4_som_size_x="16"
+    C4_som_size_y="8"
+    C4_block_size_x="14"
+    C4_block_size_y="7"
+    C4_span_size_x="154"
+    C4_span_size_y="77"
+    C4_filename="weights/L4_rfx=28_rfy=14_incx=14_incy=7_somx=16_somy=8_blockx=14_blocky=7_spanx=154_spany=77.dat"
+    C4_save_state="no"
+    C4_load_state="yes"
+    C4_alpha="0.0001"
+    C4_update_weights="no"
+/>
+<!--Connections-->	
+    <connection sourcemodule = "IN" source = "INTENSITY" targetmodule = "C_group" target = "INPUT" />
+<!-- View -->
+<view>
+    <object class="Image" 
+        module="IN" 
+        source="INTENSITY" 
+        x="0" y="0" w="2" h="2"
+        />
+    <object class="Image" 
+        module="C_group" 
+        source="RECONSTRUCTION" 
+        x="2" y="0" w="2" h="2"
+        />
+    
+</view>
+
+</group>

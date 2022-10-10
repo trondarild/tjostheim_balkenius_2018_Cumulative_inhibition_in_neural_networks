@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<group title="Example affine">
+	<!-- Modules -->
+		<module
+			class="Dataset_Input_Group"
+			name="Input"
+			img_filename="../pics/cifar-10-batches-bin/data_batch_1.bin"
+		/>
+		<module
+			class="Ones"
+			name="Zero"
+			value="0"
+		/>
+		<module
+			class="Ones"
+			name="Fortyfive"
+			value="45"
+		/>
+		<module
+			class="Ones"
+			name="One"
+			value="1"
+		/>
+	<!--Connections-->	
+		<connection sourcemodule = "Fortyfive" source = "OUTPUT" targetmodule = "Input" target = "ROTATION" />
+		<connection sourcemodule = "Zero" source = "OUTPUT" targetmodule = "Input" target = "TRANS_X" />
+		<connection sourcemodule = "Zero" source = "OUTPUT" targetmodule = "Input" target = "TRANS_Y" />
+		<connection sourcemodule = "One" source = "OUTPUT" targetmodule = "Input" target = "SCALE" />
+
+	<!-- View -->
+		<view>
+		</view>
+
+</group>

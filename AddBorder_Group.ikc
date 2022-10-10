@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<group title="AddBorder_Group">
+	<description>
+		Adds a border with 0s to input matrix. Adds processing delay of 1.
+	</description>
+	<!--Parameters-->
+	<parameter name="output_x" module="Destination" target="size_x" description="width of output with border" />
+	<parameter name="output_y" module="Destination" target="size_y" description="height of output with border" />
+	<parameter name="offset_x" module="SetSubmatrixInstance" target="offset_x" />
+	<parameter name="offset_y" module="SetSubmatrixInstance" target="offset_y" />
+
+	<!--Inputs-->
+		<input targetmodule="SetSubmatrixInstance" name="INPUT" target="SOURCE" description="Input for adding border" />
+	<!--Outputs-->
+		<output sourcemodule="SetSubmatrixInstance" name="OUTPUT" source="OUTPUT"description="Output with added border" />
+	<!-- Modules -->
+	<module
+		class = "Ones"
+		name = "Destination"
+		_size_x = "5"
+		_size_y = "4"
+		value="0.0"
+	/>
+	<module
+		class = "SetSubmatrix"
+		name = "SetSubmatrixInstance"
+		_offset_x  = "0"
+		_offset_y  = "0"
+	/>
+	<!--Connections-->	
+	<connection sourcemodule = "Destination" source = "OUTPUT" targetmodule = "SetSubmatrixInstance" target = "DESTINATION" />
+	<!-- View -->
+		<view name="AddBorder group">
+			<object 
+				class = "Image"
+				type="gray"
+				module="SetSubmatrixInstance"
+				source="OUTPUT"
+				x="0" y="0"
+				w="2" h="2"
+			/>
+		</view>
+
+</group>

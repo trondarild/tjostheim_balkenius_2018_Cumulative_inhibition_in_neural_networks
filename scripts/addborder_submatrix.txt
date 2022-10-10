@@ -1,0 +1,16 @@
+        <module
+            class="AddBorder_Group"
+            name="$name$_AddBorder"
+            _output_x="42"
+            _output_y="42"
+            _offset_x="5"
+            _offset_y="5"
+        />
+        <module
+            class = "Submatrix"
+            name = "$name$_Submatrix"
+            _x0 = "2"
+            _x1 = "4"
+            _y0 = "7"
+            _y1 = "10"
+        />

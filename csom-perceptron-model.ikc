@@ -1,0 +1,262 @@
+<?xml version="1.0"?>
+
+<group title="CSOM Perceptron Model">
+	<description type="text">
+		Model for testing CSOM module hiearchy with perceptron
+	</description>
+
+	<!--parameters for batch processing-->
+		<!--To image load/input-->
+		<parameter name="img_filename" module="Input" target="img_filename" default="" />
+		<parameter name="img_filecount" module="Input" target="filecount" default="0" />
+		<parameter name="img_period" module="Input" target="img_period" default="0" />
+
+		<!--To Randomizer and Map modules-->
+		<parameter name="rot_min" module="AffValues" target="rand_rot_min" default="0" />
+		<parameter name="rot_min" module="Map" target="low_source" default="0" />
+		<parameter name="rot_max" module="AffValues" target="rand_rot_max" default="0" />
+		<parameter name="rot_max" module="Map" target="high_source" default="0" />
+		<parameter name="rot_interval" module="AffValues" target="rand_rot_interval" default="1" />
+
+
+		<!--To L1-->
+		<parameter name="CSOM_filename_L1" module="L1" target="filename" default="weights/l1.dat" />
+		<parameter name="rf_size_x_L1" module="L1" target="rf_size_x" default="5" />	
+		<parameter name="rf_size_y_L1" module="L1" target="rf_size_y" default="5" />	
+		<parameter name="rf_inc_x_L1" module="L1" target="rf_inc_x" default="2" />	
+		<parameter name="rf_inc_y_L1" module="L1" target="rf_inc_y" default="2" />	
+		<parameter name="som_size_x_L1" module="L1" target="som_size_x" default="3" />	
+		<parameter name="som_size_y_L1" module="L1" target="som_size_y" default="3" />
+		<parameter name="CSOM_save_state" module="L1" target="save_state" default="yes" />	
+		<parameter name="CSOM_load_state" module="L1" target="load_state" default="no" />		
+
+		<!--To L2-->
+		<parameter name="CSOM_filename_L2" module="L2" target="filename" default="weights/l2.dat" />
+		<parameter name="rf_size_x_L2" module="L2" target="rf_size_x" default="10" />   
+		<parameter name="rf_size_y_L2" module="L2" target="rf_size_y" default="10" />   
+		<parameter name="rf_inc_x_L2" module="L2" target="rf_inc_x" default="2" /> 
+		<parameter name="rf_inc_y_L2" module="L2" target="rf_inc_y" default="2" /> 
+		<parameter name="som_size_x_L2" module="L2" target="som_size_x" default="3" /> 
+		<parameter name="som_size_y_L2" module="L2" target="som_size_y" default="3" />
+		<parameter name="CSOM_save_state" module="L2" target="save_state" default="yes" />  
+		<parameter name="CSOM_load_state" module="L2" target="load_state" default="no" />      
+
+		<!--To L3-->
+		<parameter name="CSOM_filename_L3" module="L3" target="filename" default="weights/l3.dat" />
+		<parameter name="rf_size_x_L3" module="L3" target="rf_size_x" default="60" />   
+		<parameter name="rf_size_y_L3" module="L3" target="rf_size_y" default="50" />   
+		<parameter name="rf_inc_x_L3" module="L3" target="rf_inc_x" default="10" /> 
+		<parameter name="rf_inc_y_L3" module="L3" target="rf_inc_y" default="10" /> 
+		<parameter name="som_size_x_L3" module="L3" target="som_size_x" default="5" /> 
+		<parameter name="som_size_y_L3" module="L3" target="som_size_y" default="5" />
+		<parameter name="CSOM_save_state" module="L3" target="save_state" default="yes" />  
+		<parameter name="CSOM_load_state" module="L3" target="load_state" default="no" />      
+
+		<!--To Perceptron-->
+		<parameter name="perc_learning_rate" module="Perceptron" target="learning_rate" default="0.0005" />
+		<parameter name="perc_correct_average_size" module="Perceptron" target="correct_average_size" default = "200" />
+		<parameter name="perc_1_filename" module="Perceptron" target="filename" default = "weights/perceptron.dat" />
+		<parameter name="perc_save_state" module="Perceptron" target="save_state" default = "no" />
+		<parameter name="perc_load_state" module="Perceptron" target="load_state" default = "yes"	 />
+		
+		<!--To outputfile-->
+		<parameter name="fileout_append" module="Result_out" target="append" default="no" description="whether to append to the file or overwrite" />
+		<parameter name="fileout_filename" module="Result_out" target="filename" default="model_1b_output.csv" />
+
+	<!-- Modules -->
+		<!--input group: use only rotation-->
+			<module
+				class = "Input_Group"
+				name = "Input"
+				_img_filename = "../../letters/uppercase/uppercase%02d_rz.jpg"
+				_filecount = "24"
+				_img_period = "2"
+			/>	
+			<module
+				class = "Randomizer_Group"
+				name = "AffValues"
+				rand_scale_min="1"
+				rand_scale_max="1"
+				rand_scale_interval="1"
+				_rand_rot_min="-90"
+				_rand_rot_max="90"
+				_rand_rot_interval="5"
+				rand_trans_x_min="0"
+				rand_trans_x_max="0"
+				rand_trans_x_interval="1"
+				rand_trans_y_min="0"
+				rand_trans_y_max="0"
+				rand_trans_y_interval="1"
+			/>
+		<!--CSOM hierarchy-->
+			<module
+				class = "CSOM_PCA"
+				name = "L1"
+				output_type = "combined"
+				use_arbor = "no"
+				_rf_size_x = "5"
+				_rf_size_y = "5"
+				_rf_inc_x = "2"
+				_rf_inc_y = "2"
+				_som_size_x = "3"
+				_som_size_y = "3"
+				_alpha_min = "0.0001"
+				_alpha = "0.0001"
+				_filename = "weights/csom_paper_l1.dat"
+				_save_state = "yes"
+				_load_state = "yes"
+			/>
+			<module
+				class = "CSOM_PCA"
+				name = "L2"
+				output_type = "combined"
+				use_arbor = "no"
+				_rf_size_x = "5"
+				_rf_size_y = "5"
+				_rf_inc_x = "2"
+				_rf_inc_y = "2"
+				_som_size_x = "3"
+				_som_size_y = "3"
+				_alpha_min = "0.0001"
+				_alpha = "0.0001"
+				_filename = "weights/csom_paper_l1.dat"
+				_save_state = "yes"
+				_load_state = "yes"
+			/>
+			<module
+				class = "CSOM_PCA"
+				name = "L3"
+				output_type = "combined"
+				use_arbor = "no"
+				_rf_size_x = "5"
+				_rf_size_y = "5"
+				_rf_inc_x = "2"
+				_rf_inc_y = "2"
+				_som_size_x = "3"
+				_som_size_y = "3"
+				_alpha_min = "0.0001"
+				_alpha = "0.0001"
+				_filename = "weights/csom_paper_l1.dat"
+				_save_state = "yes"
+				_load_state = "yes"
+			/>
+		<!--Perceptron-->
+			<module
+			class = "Perceptron"
+			name = "Perceptron"
+			learning_rule = "delta"
+			activation_type = "tanh" 
+			learning_type = "instant"
+			_learning_rate = "0.0005"
+			_correct_average_size = "200"
+			_filename = "weights/csom_paper_perceptron.dat"
+			_save_state = "no"
+			_load_state = "yes"	
+			/>	
+			<module
+				class = "Constant"
+				name = "Perceptron_train_on"
+				outputsize  = "1"
+				data  = "1"
+			/>
+		<module
+			class = "Map"
+			name = "Map"
+			_low_source = "0"
+			_high_source = "360"
+			low_target = "-1"
+			high_target = "1"
+		/>
+		
+		<!--Correctness file out-->	
+		<module
+			class = "OutputFile"
+			name = "Result_out"
+			_filename = "stat_data/csom_paper.output" >
+		
+			<column name = "CORRECT" decimals="3"/>   
+		</module>	
+	<!--Connections-->	
+		<!--To input group-->
+		<connection sourcemodule = "AffValues" source = "SCALE_OUTPUT" targetmodule = "Input" target = "SCALE" />
+		<connection sourcemodule = "AffValues" source = "ROTATION_OUTPUT" targetmodule = "Input" target = "ROTATION" />
+		<connection sourcemodule = "AffValues" source = "TRANSX_OUTPUT" targetmodule = "Input" target = "TRANS_X" />
+		<connection sourcemodule = "AffValues" source = "TRANSY_OUTPUT" targetmodule = "Input" target = "TRANS_Y" />
+
+		<!--To Map-->
+		<connection sourcemodule = "AffValues" source = "ROTATION_OUTPUT" targetmodule = "Map" target = "INPUT" />
+		
+		<!--To L1-->
+		<connection sourcemodule = "Input" source = "OUTPUT" targetmodule = "L1" target = "INPUT" />
+		<connection sourcemodule = "L2" source = "RECONSTRUCTION" targetmodule = "L1" target = "TOP_DOWN" />
+		<!--To L2-->
+		<connection sourcemodule = "L1" source = "OUTPUT" targetmodule = "L2" target = "INPUT" />
+		<connection sourcemodule = "L3" source = "RECONSTRUCTION" targetmodule = "L2" target = "TOP_DOWN" />
+		<!--To L3-->
+		<connection sourcemodule = "L2" source = "OUTPUT" targetmodule = "L3" target = "INPUT" />
+		<connection sourcemodule = "L3" source = "OUTPUT" targetmodule = "L3" target = "TOP_DOWN" />
+		<!--To Perceptron-->
+		<connection sourcemodule = "L3" source = "OUTPUT" targetmodule = "Perceptron" target = "T_INPUT" />
+		<connection sourcemodule = "L3" source = "OUTPUT" targetmodule = "Perceptron" target = "INPUT" />
+		<connection sourcemodule = "Perceptron_train_on" source = "OUTPUT" targetmodule = "Perceptron" target = "TRAIN" />
+		<connection sourcemodule = "Map" source = "OUTPUT" targetmodule = "Perceptron" target = "T_TARGET" delay="4" />
+
+		<!--To File out-->
+		<connection sourcemodule = "Perceptron" source = "CORRECT" targetmodule = "Result_out" target = "CORRECT" />
+
+	<!-- View -->
+		<view name="CSOM Perceptron group">
+	<!--Row 1-->
+			<object class= "Image" type="gray" module="L1" source="RECONSTRUCTION"
+						x="0" y="0" h="2" w="2" />
+			<object class= "Image" type="gray" title="RF1" module="L1" source="WEIGHTS"
+						x="2" y="0" h="2" w="2" />
+			<object class= "Image" type="rgb" title="Output" module="L1" source="OUTPUT_RED+OUTPUT_GREEN+OUTPUT_BLUE"
+						x="4" y="0" h="2" w="2" />
+			<object class= "Image" type="gray" module="L1" source="OUTPUT"
+						x="6" y="0" h="2" w="2" />
+			
+			<!--Row 2-->
+			<object class= "Image" type="gray" module="L2" source="RECONSTRUCTION"
+						x="0" y="2" h="2" w="2" />
+			<object class= "Image" type="gray" title="RF2" module="L2" source="WEIGHTS"
+						x="2" y="2" h="2" w="2" />
+			<object class= "Image" type="rgb" title="Output" module="L2" source="OUTPUT_RED+OUTPUT_GREEN+OUTPUT_BLUE"
+						x="4" y="2" h="2" w="2" />
+			<object class= "Image" type="gray" module="L2" source="OUTPUT"
+						x="6" y="2" h="2" w="2" />
+
+			<!--Row 3-->
+			<object class= "Image" type="gray" module="L3" source="RECONSTRUCTION"
+						x="0" y="4" h="2" w="2" />
+			<object class= "Image" type="gray" title="RF3" module="L3" source="WEIGHTS"
+						x="2" y="4" h="2" w="2" />
+			<object class= "Image" type="rgb" title="Output" module="L3" source="OUTPUT_RED+OUTPUT_GREEN+OUTPUT_BLUE"
+						x="4" y="4" h="2" w="2" />
+			<object class= "Image" type="gray" module="L3" source="OUTPUT"
+						x="6" y="4" h="2" w="2" />
+
+			<!--Row 5-->
+			<object class="Plot " 
+					 module="Perceptron" 
+					 source="ERROR" 
+					 x="0" y="8" w="2" h="2"
+					 min="0"
+					 max="1"
+			/>
+			<object class="Plot" 
+					 module="AffValues" 
+					 source="ROTATION_OUTPUT" 
+					 x="2" y="8" w="2" h="2"
+					 min="-90"
+					 max="90"
+			/>
+			<object class="Plot" 
+					 module="Map" 
+					 source="OUTPUT" 
+					 x="4" y="8" w="2" h="2"
+					 min="-1"
+					 max="1"
+			/>
+		</view>
+ </group>

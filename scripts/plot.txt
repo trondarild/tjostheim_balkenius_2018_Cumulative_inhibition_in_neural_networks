@@ -1,0 +1,2 @@
+	<object class= "Plot" module="$module$" source="$source$"
+			        	x="$x$" y="$y$" h="2" w="2" />

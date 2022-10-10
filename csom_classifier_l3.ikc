@@ -1,0 +1,319 @@
+<?xml version="1.0"?>
+
+<group title="CSOM classifer">
+<!-- Modules -->
+    <module
+        class = "Randomizer_Group"
+        name = "Rand"
+        scale_min="0"
+        scale_max="0"
+        scale_interval="1"
+        rot_min="0"
+        rot_max="0"
+        rot_interval="1"
+        trans_x_min="0"
+        trans_x_max="0"
+        trans_x_interval="1"
+        trans_y_min="0"
+        trans_y_max="0"
+        trans_y_interval="1"
+    />
+    <_module 
+        class = "Dataset_Input_Group" 
+        name = "In_1" 
+        filename="../pics/coil-100/crossval_group_1/train"
+        type="COIL"
+        size_x="32"
+        size_y="32"
+        channels="3"
+        classcount="100"
+        instances="4800"
+        _border_output="36"
+        _border_offset="2"
+        sigma="0.01"
+        randomize="true"
+        debug = "false"
+    />
+    <module 
+        class = "Dataset_Input_Group" 
+        name = "In_1" 
+        type="MNIST"
+        classcount="10"
+        filename="../pics/mnist/train-images-idx3-ubyte"
+        filename_labels="../pics/mnist/train-labels-idx1-ubyte"
+        size_x="28"
+        size_y="28"
+        channels="1"
+        instances="60000"
+        _border_output="36"
+        _border_offset="2"
+        sigma="0.01"
+        randomize="true"
+        debug = "false"
+    />
+    
+    <module
+        class="AddBorder_Group"
+        name="In1_AddBorder_Dummy"
+        output_x="36"
+        output_y="36"
+        offset_x="0"
+        offset_y="0"
+    />
+    <!--Output file-->
+        <module
+            class = "OutputFile"
+            name = "OutputFile"
+            _filename = "stat_data/coil_train_L4.output" 
+            filename = "stat_data/mnist_train_L4.output" 
+            period="100" 
+            >
+            <column name = "CORRECT" decimals="4"/>   
+        </module>   
+    <!--csom stack-->
+            <module
+                class="CSOM_PCA"
+                name="L1"
+                rf_inc_x="1"
+                rf_inc_y="1"
+                span_size_x="0"
+                span_size_y="0"
+                rf_size_x="3"
+                rf_size_y="3"
+                filename="weights/L1_rfx=3_rfy=3_incx=3_incy=3_somx=12_somy=3_block=3_span=0.dat"
+                som_size_x="12"
+                som_size_y="3"
+                block_size_x="3"
+                block_size_y="3"
+                alpha="0.0005"
+                update_weights="no"
+                save_state="no"
+                load_state="yes"
+                save_weights_only="yes"
+                load_weights_only="yes"
+                upstreams="1"
+                downstreams="1"
+            />
+            
+            
+            <module
+                class="CSOM_PCA"
+                name="L2"
+                rf_inc_x="12"
+                rf_inc_y="3"
+                span_size_x="24"
+                span_size_y="6"
+                rf_size_x="36"
+                rf_size_y="9"
+                filename="weights/L2_rfx=36_rfy=9_incx=36_incy=9_somx=20_somy=10_blockx=36_blocky=9_spanx=24_spany=6.dat"
+                som_size_x="20"
+                som_size_y="10"
+                block_size_x="12"
+                block_size_y="3"
+                alpha="0.01"
+                update_weights="no"
+                save_state="no"
+                load_state="yes"
+                save_weights_only="yes"
+                load_weights_only="yes"
+                upstreams="1"
+                downstreams="1"
+            />
+           
+            <module
+                class="CSOM_PCA"
+                name="L3"
+                rf_size_x="40"
+                rf_size_y="20"
+                rf_inc_x="20"
+                rf_inc_y="10"
+                som_size_x="24"
+                som_size_y="12"
+                block_size_x="20"
+                block_size_y="10"
+                span_size_x="100"
+                span_size_y="50"
+                filename="weights/L3_rfx=40_rfy=20_incx=40_incy=20_somx=24_somy=12_blockx=40_blocky=20_spanx=100_spany=50.dat"
+                alpha="0.005"
+                alpha_min="0.0001"
+                alpha_decay="0.9952"
+                update_weights="no"
+                save_state="no"
+                load_state="yes"
+                save_weights_only="yes"
+                load_weights_only="yes"
+                upstreams="1"
+                downstreams="1"
+            />
+           
+            <_module
+                class="CSOM_PCA"
+                name="L4"
+                rf_size_x="48"
+                rf_size_y="24"
+                rf_inc_x="24"
+                rf_inc_y="12"
+                som_size_x="16"
+                som_size_y="8"
+                block_size_x="24"
+                block_size_y="12"
+                span_size_x="264"
+                span_size_y="132"
+                filename="weights/L4_rfx=48_rfy=24_incx=48_incy=24_somx=32_somy=16_blockx=48_blocky=24_spanx=264_spany=132.dat"
+                alpha="0.0005"
+                alpha_min="0.0001"
+                alpha_decay="0.9952"
+                update_weights="no"
+                save_state="no"
+                load_state="yes"
+                save_weights_only="yes"
+                load_weights_only="yes"
+                border_multiplier="1"
+                upstreams="1"
+                downstreams="1"
+            />
+    <!--Classifier-->
+        <module
+			class="Ones"
+			name="ClassPercTrainOn"
+			size_x="1"
+			size_y="1"
+			value="1"
+		/>
+        <module
+			class = "Perceptron"
+			name = "ClassPerc"
+			learning_rule = "rosenblatt"
+			activation_type = "step" 
+			learning_type = "instant"
+			learning_rate = "0.05"
+			correct_average_size = "10"
+			_filename = "weights/perc_classifier_coil_L4.dat"
+            filename = "weights/perc_classifier_mnist_L3.dat"
+			save_state = "yes"
+			load_state = "no"
+	    />	
+        <module
+			class="Delay"
+			name="Class_Dummy_Input"
+			
+		/>
+        <module
+			class="Delay"
+			name="Class_Dummy_Perc"
+			
+		/>
+        <module
+            class = "ArgMax"
+            name = "Class_Dummy_Input_Argmax"
+        />
+        <module
+            class = "ArgMax"
+            name = "Class_Dummy_Perc_Argmax"
+        />
+        <module
+			class = "Stop"
+			name = "StopInstance"
+			termination_criterion  = "0.15"
+            comparator = "greater"
+			wait  = "10"
+			select="0"
+			debug="no"
+		/>
+<!--Connections-->	
+        <connection sourcemodule = "Rand" source = "SCALE_OUTPUT" targetmodule = "In_1" target = "SCALE" delay="1"/>
+        <connection sourcemodule = "Rand" source = "ROTATION_OUTPUT" targetmodule = "In_1" target = "ROTATION" delay="1"/>
+        <connection sourcemodule = "Rand" source = "TRANSX_OUTPUT" targetmodule = "In_1" target = "TRANS_X" delay="1"/>
+        <connection sourcemodule = "Rand" source = "TRANSY_OUTPUT" targetmodule = "In_1" target = "TRANS_Y" delay="1"/>
+        
+
+        <connection sourcemodule = "In_1" source = "OUTPUT" targetmodule = "L1" target = "INPUT" />
+        <connection sourcemodule = "In_1" source = "OUTPUT" targetmodule = "In1_AddBorder_Dummy" target = "INPUT" delay="6" />
+        
+    <!--csom stack-->
+        <connection sourcemodule = "L1" source = "OUTPUT" targetmodule = "L2" target = "INPUT" delay="1"/>
+        <connection sourcemodule = "L2" source = "RECONSTRUCTION" targetmodule = "L1" target = "TOP_DOWN" delay="1"/>
+        <connection sourcemodule = "L2" source = "OUTPUT" targetmodule = "L3" target = "INPUT" delay="1"/>
+        <connection sourcemodule = "L3" source = "RECONSTRUCTION" targetmodule = "L2" target = "TOP_DOWN" delay="1"/>
+        <connection sourcemodule = "L3" source = "OUTPUT" targetmodule = "L3" target = "TOP_DOWN" delay="1"/>
+        <_connection sourcemodule = "L4" source = "RECONSTRUCTION" targetmodule = "L3" target = "TOP_DOWN" delay="1"/>
+        <_connection sourcemodule = "L4" source = "OUTPUT" targetmodule = "L4" target = "TOP_DOWN" delay="1"/>
+
+    <!--Classifier-->
+        <connection sourcemodule = "L3" source = "OUTPUT" targetmodule = "ClassPerc" target = "INPUT" delay="1"/>
+        <connection sourcemodule = "L3" source = "OUTPUT" targetmodule = "ClassPerc" target = "T_INPUT" delay="1"/>
+        <connection sourcemodule = "In_1" source = "CLASS" targetmodule = "ClassPerc" target = "T_TARGET" delay="7"/>
+        <connection sourcemodule = "ClassPercTrainOn" source = "OUTPUT" targetmodule = "ClassPerc" target = "TRAIN" delay="1"/>
+        <connection sourcemodule = "ClassPerc" source = "CORRECT" targetmodule = "OutputFile" target = "CORRECT" />
+
+        <connection sourcemodule = "In_1" source = "CLASS" targetmodule = "Class_Dummy_Input" target = "INPUT" delay="11"/>
+        <connection sourcemodule = "ClassPerc" source = "OUTPUT" targetmodule = "Class_Dummy_Perc" target = "INPUT" delay="5"/>
+
+        <connection sourcemodule = "In_1" source = "CLASS" targetmodule = "Class_Dummy_Input_Argmax" target = "INPUT" delay="11"/>
+        <connection sourcemodule = "ClassPerc" source = "OUTPUT" targetmodule = "Class_Dummy_Perc_Argmax" target = "INPUT" delay="5"/>
+        
+        <connection sourcemodule = "ClassPerc" source = "CORRECT" targetmodule = "StopInstance" target = "INPUT" />
+<!-- View -->
+<view name="Reconstruction">
+    <object class= "Image" type="gray" module="In1_AddBorder_Dummy" source="OUTPUT"
+			        	x="0" y="0" h="2" w="2" />
+    <object class= "Image" type="gray" module="L1" source="RECONSTRUCTION"
+			        	x="2" y="0" h="2" w="2" />
+    <object class="Plot" module="ClassPerc" source="CORRECT"
+                        x="0" y="2" h="2" w="2" />
+    <object
+        class="BarGraph" 
+        module="Class_Dummy_Input" 
+        source="OUTPUT" 
+        x="0" 
+        y="4"
+        w="3"
+        h="1"
+    />
+    <object
+        class="Table" 
+        module="Class_Dummy_Input_Argmax"
+        source="OUTPUT"
+        x="3"
+        y="4"
+        h="1"
+        w="1" 
+    />
+    <object
+        class="BarGraph" 
+        module="Class_Dummy_Perc" 
+        source="OUTPUT" 
+        x="0" 
+        y="5"
+        w="3"
+        h="1"
+    />
+    <object
+        class="Table" 
+        module="Class_Dummy_Perc_Argmax"
+        source="OUTPUT"
+        x="3"
+        y="5"
+        h="1"
+        w="1" 
+    />
+</view>
+<view name="Stack">
+	<object class= "Image" type="gray" module="L1" source="OUTPUT"
+			        	x="0" y="0" h="2" w="2" />
+	<object class= "Image" type="gray" module="L1" source="WEIGHTS"
+			        	x="2" y="0" h="2" w="2" />
+	<object class= "Image" type="gray" module="L2" source="OUTPUT"
+			        	x="0" y="2" h="2" w="2" />
+	<object class= "Image" type="gray" module="L2" source="WEIGHTS"
+			        	x="2" y="2" h="2" w="2" />
+	<object class= "Image" type="gray" module="L3" source="OUTPUT"
+			        	x="0" y="4" h="2" w="2" />
+	<object class= "Image" type="gray" module="L3" source="WEIGHTS"
+			        	x="2" y="4" h="2" w="2" />
+	<_object class= "Image" type="gray" module="L4" source="OUTPUT"
+			        	x="0" y="6" h="2" w="2" />
+	<_object class= "Image" type="gray" module="L4" source="WEIGHTS"
+			        	x="2" y="6" h="2" w="2" />
+</view>	
+</group>

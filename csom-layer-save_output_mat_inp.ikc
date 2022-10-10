@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+
+<group title="CSOM layer train">
+<description type="text">
+    Allows sequential training of arbitrarily deep 
+    CSOM stacks by loading and saving inputs and outputs
+    of CSOM module. Hyperparameters set in command line
+</description>
+<!-- Parameters-->
+    <parameter name="out_filename" module="OUT" target="filename" default="" />
+    <parameter name="in_filename" module="IN" target="filename" default="" />
+    
+    <parameter name="csom_filename" module="CSOM" target="filename" default="" />
+
+<!-- Modules -->
+    <module 
+        class = "InputFile" 
+        name = "IN" 
+	    _filecount="100"
+	    iterations = "100000"
+        _random="yes" 
+        _size_x="32"
+        _size_y="32"
+	/>
+    <module
+      class = "ArrayToMatrix"
+      name = "TO_MAT"
+      _array_length="34*16"
+    />
+    <_module
+        class="AddBorder_Group"
+        name="BORDER"
+        _output_x="1"
+        _output_y="1"
+        _offset_x="1"
+        _offset_y="1"
+    />
+    <module
+        class = "CSOM_PCA"
+        name = "CSOM"
+        
+        _rf_size_x = "3"
+        _rf_size_y = "3"
+        _rf_inc_x = "1"
+        _rf_inc_y = "1"
+        _som_size_x = "4"
+        _som_size_y = "4"
+        _block_size_x = "3"
+        _block_size_y = "3"
+        _span_size_x = "0"
+        _span_size_y = "0"
+        
+        alpha = "0.0001"
+        alpha_min = "0.0001"
+        alpha_max = "0.0001"
+        alpha_decay = "1"
+
+        use_arbor = "no"
+        top_down = "yes"
+        _filename="L1_span_test.dat"
+            
+        _update_weights = "yes"
+        _save_state="no" 
+        _load_state="yes" 
+        save_weights_only="yes"
+        load_weights_only="yes"
+    />
+
+    <module
+        class = "OutputFile"
+        name = "OUT"
+        _filename = "data.txt"
+        decimals="5"
+    >
+        <column name = "INTENSITY" />  
+    
+    </module>
+    <_module 
+	    class = "OutputPNG"
+	    name = "OUT"
+	    _filename = "Int%0d.png"
+        suppress="3"
+	/>
+<!--Connections-->	
+    <connection sourcemodule = "IN" source = "INTENSITY" targetmodule = "TO_MAT" target = "INPUT" />
+    <connection sourcemodule = "TO_MAT" source = "OUTPUT" targetmodule = "CSOM" target = "INPUT" />
+    <connection sourcemodule = "CSOM" source = "OUTPUT" targetmodule = "OUT" target = "INTENSITY" />
+    <connection sourcemodule = "CSOM" source = "OUTPUT" targetmodule = "CSOM" target = "TOP_DOWN" />
+<!-- View -->
+<view>
+ <object class= "Image" type="gray" module="TO_MAT" source="OUTPUT"
+			                                        x="0" y="0" h="2" w="2" />
+    <object class= "Image" type="gray" module="CSOM" source="RECONSTRUCTION"
+                                                    x="2" y="0" h="2" w="2" />
+    <object class= "Image" type="gray" module="CSOM" source="WEIGHTS"
+ 			                                      x="0" y="2" h="2" w="6" />
+    
+    <object
+        class="Image"
+        module="CSOM"
+        source="OUTPUT"
+        x="0"
+        y="4"
+        w="6"
+        h="2"
+        type="gray"
+    />                                               
+</view>
+                                                                
+</group>

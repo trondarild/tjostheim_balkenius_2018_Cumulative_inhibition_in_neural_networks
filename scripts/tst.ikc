@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+
+<group title="Group C2" description="Parameterized group file for 2 CSOM modules connected in a stack">
+	<description type="text">
+		
+	</description>
+
+	<!-- Parameters -->
+	<parameter name="INPUT" module="C1" target="INPUT" />
+	<parameter name="OUTPUT" module="C2" target="OUTPUT" />
+
+	<parameter name="C1_rf_size_x" module="C1" target="rf_size_x" />
+	<parameter name="C1_rf_size_y" module="C1" target="rf_size_y" />
+	<parameter name="C1_rf_inc_x" module="C1" target="rf_inc_x" />
+	<parameter name="C1_rf_inc_y" module="C1" target="rf_inc_y" />
+	<parameter name="C1_som_size_x" module="C1" target="som_size_x" />
+	<parameter name="C1_som_size_y" module="C1" target="som_size_y" />
+	<parameter name="C1_alpha" module="C1" target="alpha" />
+	<parameter name="C1_save_state" module="C1" target="save_state" />
+	<parameter name="C1_load_state" module="C1" target="load_state" />
+	<parameter name="C1_update_weights" module="C1" target="update_weights" />
+	<parameter name="C1_filename" module="C1" target="filename" />
+	<parameter name="C2_rf_size_x" module="C2" target="rf_size_x" />
+	<parameter name="C2_rf_size_y" module="C2" target="rf_size_y" />
+	<parameter name="C2_rf_inc_x" module="C2" target="rf_inc_x" />
+	<parameter name="C2_rf_inc_y" module="C2" target="rf_inc_y" />
+	<parameter name="C2_som_size_x" module="C2" target="som_size_x" />
+	<parameter name="C2_som_size_y" module="C2" target="som_size_y" />
+	<parameter name="C2_alpha" module="C2" target="alpha" />
+	<parameter name="C2_save_state" module="C2" target="save_state" />
+	<parameter name="C2_load_state" module="C2" target="load_state" />
+	<parameter name="C2_update_weights" module="C2" target="update_weights" />
+	<parameter name="C2_filename" module="C2" target="filename" />
+
+	<!-- Modules -->
+      <module
+			class = "CSOM_PCA"
+			name = "C1"
+         output_type = "combined"
+         use_arbor = "no"
+         
+         _rf_size_x = "5"
+         _rf_size_y = "5"
+         _rf_inc_x = "2"
+         _rf_inc_y = "2"
+         _som_size_x = "3"
+         _som_size_y = "3"
+      
+         _alpha = "0.0001"
+         _filename = "weights/experiment_1a_l1.dat"
+         _save_state = "yes"
+         _load_state = "yes"
+      />
+      <module
+			class = "CSOM_PCA"
+			name = "C2"
+         output_type = "combined"
+         use_arbor = "no"
+         
+         _rf_size_x = "5"
+         _rf_size_y = "5"
+         _rf_inc_x = "2"
+         _rf_inc_y = "2"
+         _som_size_x = "3"
+         _som_size_y = "3"
+      
+         _alpha = "0.0001"
+         _filename = "weights/experiment_1a_l1.dat"
+         _save_state = "yes"
+         _load_state = "yes"
+      />
+
+	<!-- Connections -->
+	<connection sourcemodule = "C1" source = "OUTPUT" targetmodule = "C2" target = "INPUT" delay="1"/>
+	<connection sourcemodule = "C2" source = "RECONSTRUCTION" targetmodule = "C1" target = "TOP_DOWN" delay="1"/>
+	<connection sourcemodule = "C1" source = "RECONSTRUCTION" targetmodule = "C1" target = "TOP_DOWN" delay="1"/>
+
+	<!-- Views -->
+	<view name="Group view C2">
+	<object class= "Image" type="gray" module="C1" source="OUTPUT"
+			        	x="0" y="0" h="2" w="2" />
+	<object class= "Image" type="gray" module="C1" source="WEIGHTS"
+			        	x="2" y="0" h="2" w="2" />
+	<object class= "Image" type="gray" module="C2" source="OUTPUT"
+			        	x="0" y="2" h="2" w="2" />
+	<object class= "Image" type="gray" module="C2" source="WEIGHTS"
+			        	x="2" y="2" h="2" w="2" />
+	</view>
+</group>
+<!-- end file -->

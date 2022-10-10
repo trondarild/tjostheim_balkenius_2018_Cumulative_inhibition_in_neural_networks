@@ -1,0 +1,338 @@
+<?xml version="1.0"?>
+
+<group title="Class training C3" description="Class training setup for 3 CSOM modules">
+	<description type="text">
+		
+	Parameters:
+
+	class_perc_filename
+	class_perc_save_state
+	class_perc_load_state
+	class_perc_training_on
+
+	Cx_rf_size
+	Cx_rf_inc
+	Cx_som_size
+	Cx_alpha
+	Cx_save_state
+	Cx_load_state
+	Cx_update_weights
+	Cx_filename
+	
+	error_filename - name of file to save raw error data from top level CSOM module to
+
+	input_type - COIL, CIFAR or MNIST 
+	input_filename - name of input file
+	input_size_x - width
+	input_size_y - height
+	input_channels - number of channels (3 for RBG)
+	input_instances - number of instances in file
+
+	</description>
+
+	<!-- Parameters -->
+	<parameter name="C1_filename" module="C3_i" target="C1_filename" />
+	<parameter name="C1_filename" module="C3_r" target="C1_filename" />
+	<parameter name="C1_filename" module="C3_g" target="C1_filename" />
+	<parameter name="C1_filename" module="C3_b" target="C1_filename" />
+
+	<parameter name="C2_filename" module="C3_i" target="C2_filename" />
+	<parameter name="C2_filename" module="C3_r" target="C2_filename" />
+	<parameter name="C2_filename" module="C3_g" target="C2_filename" />
+	<parameter name="C2_filename" module="C3_b" target="C2_filename" />
+	
+	<parameter name="C3_filename" module="C3_i" target="C3_filename" />
+	<parameter name="C3_filename" module="C3_r" target="C3_filename" />
+	<parameter name="C3_filename" module="C3_g" target="C3_filename" />
+	<parameter name="C3_filename" module="C3_b" target="C3_filename" />
+
+	<parameter name="C1_load_state" module="C3_i" target="C1_load_state" />
+	<parameter name="C1_save_state" module="C3_i" target="C1_save_state" />
+	<parameter name="C1_update_weights" module="C3_i" target="C1_update_weights" />
+	<parameter name="C2_load_state" module="C3_i" target="C2_load_state" />
+	<parameter name="C2_save_state" module="C3_i" target="C2_save_state" />
+	<parameter name="C2_update_weights" module="C3_i" target="C2_update_weights" />
+	<parameter name="C3_load_state" module="C3_i" target="C3_load_state" />
+	<parameter name="C3_save_state" module="C3_i" target="C3_save_state" />
+	<parameter name="C3_update_weights" module="C3_i" target="C3_update_weights" />
+
+	<parameter name="C1_load_state" module="C3_r" target="C1_load_state" />
+	<parameter name="C1_save_state" module="C3_r" target="C1_save_state" />
+	<parameter name="C1_update_weights" module="C3_r" target="C1_update_weights" />
+	<parameter name="C2_load_state" module="C3_r" target="C2_load_state" />
+	<parameter name="C2_save_state" module="C3_r" target="C2_save_state" />
+	<parameter name="C2_update_weights" module="C3_r" target="C2_update_weights" />
+	<parameter name="C3_load_state" module="C3_r" target="C3_load_state" />
+	<parameter name="C3_save_state" module="C3_r" target="C3_save_state" />
+	<parameter name="C3_update_weights" module="C3_r" target="C3_update_weights" />
+
+	<parameter name="C1_load_state" module="C3_g" target="C1_load_state" />
+	<parameter name="C1_save_state" module="C3_g" target="C1_save_state" />
+	<parameter name="C1_update_weights" module="C3_g" target="C1_update_weights" />
+	<parameter name="C2_load_state" module="C3_g" target="C2_load_state" />
+	<parameter name="C2_save_state" module="C3_g" target="C2_save_state" />
+	<parameter name="C2_update_weights" module="C3_g" target="C2_update_weights" />
+	<parameter name="C3_load_state" module="C3_g" target="C3_load_state" />
+	<parameter name="C3_save_state" module="C3_g" target="C3_save_state" />
+	<parameter name="C3_update_weights" module="C3_g" target="C3_update_weights" />
+
+	<parameter name="C1_load_state" module="C3_b" target="C1_load_state" />
+	<parameter name="C1_save_state" module="C3_b" target="C1_save_state" />
+	<parameter name="C1_update_weights" module="C3_b" target="C1_update_weights" />
+	<parameter name="C2_load_state" module="C3_b" target="C2_load_state" />
+	<parameter name="C2_save_state" module="C3_b" target="C2_save_state" />
+	<parameter name="C2_update_weights" module="C3_b" target="C2_update_weights" />
+	<parameter name="C3_load_state" module="C3_b" target="C3_load_state" />
+	<parameter name="C3_save_state" module="C3_b" target="C3_save_state" />
+	<parameter name="C3_update_weights" module="C3_b" target="C3_update_weights" />
+
+	<parameter name="class_perc_filename" module="ClassPerc_i" target="filename" />
+	<parameter name="class_perc_save_state" module="ClassPerc_i" target="save_state" />
+	<parameter name="class_perc_load_state" module="ClassPerc_i" target="load_state" />
+	<parameter name="class_perc_train" module="ClassPercTrainOn" target="value" />
+
+	<parameter name="class_perc_filename" module="ClassPerc_rgb" target="filename" />
+	<parameter name="class_perc_save_state" module="ClassPerc_rgb" target="save_state" />
+	<parameter name="class_perc_load_state" module="ClassPerc_rgb" target="load_state" />
+	
+	<_parameter name="rot_perc_filename" module="RotPerc" target="filename" />
+	<_parameter name="rot_perc_save_state" module="RotPerc" target="save_state" />
+	<_parameter name="rot_perc_load_state" module="RotPerc" target="load_state" />
+	<_parameter name="rot_perc_train" module="RotPercTrainOn" target="value" />
+	<_parameter name="scale_perc_filename" module="ScalePerc" target="filename" />
+	<_parameter name="scale_perc_save_state" module="ScalePerc" target="save_state" />
+	<_parameter name="scale_perc_load_state" module="ScalePerc" target="load_state" />
+	<_parameter name="scale_perc_train" module="ScalePercTrainOn" target="value" />
+	<_parameter name="trans_perc_filename" module="TransPerc" target="filename" />
+	<_parameter name="trans_perc_save_state" module="TransPerc" target="save_state" />
+	<_parameter name="trans_perc_load_state" module="TransPerc" target="load_state" />
+	<_parameter name="trans_perc_train" module="TransPercTrainOn" target="value" />
+	<parameter name="error_filename" module="OutputFile" target="filename" />
+	<parameter name="input_filename" module="ReadDataset" target="img_filename" />
+	<parameter name="input_type" module="ReadDataset" target="type" />
+	<parameter name="input_size_x" module="ReadDataset" target="size_x" />
+	<parameter name="input_size_y" module="ReadDataset" target="size_y" />
+	<parameter name="input_channels" module="ReadDataset" target="channels" />
+	<parameter name="input_instances" module="ReadDataset" target="instances" />
+	<parameter name="input_classes" module="ReadDataset" target="classcount" />
+	<!-- Modules -->
+
+		<module
+          class="Average"
+          name="Avg"
+          type="SMA"
+          window_size="100"
+          _termination_criterion="0.080"
+      />
+
+		<module
+          class="Average"
+          name="StopAvg"
+          type="SMA"
+          window_size="100"
+          _termination_criterion="0.080"
+      />
+
+		<module
+          class="Subtract"
+          name="Subtract"
+      />	
+
+		<module
+			class = "Stop"
+			name = "Stop"
+			termination_criterion  = "0.0001"
+			wait  = "1000000"
+			select="0"
+			debug="no"
+		/>
+
+		<module
+			class = "Perceptron"
+			name = "ClassPerc_i"
+			learning_rule = "delta"
+			activation_type = "tanh" 
+			learning_type = "instant"
+			learning_rate = "0.0005"
+			correct_average_size = "200"
+			_filename = "weights/tat_experiment_1a_perceptron.dat"
+			_save_state = "no"
+			_load_state = "yes"
+	  />
+	  <module
+			class = "Perceptron"
+			name = "ClassPerc_rgb"
+			learning_rule = "delta"
+			activation_type = "tanh" 
+			learning_type = "instant"
+			learning_rate = "0.0005"
+			correct_average_size = "200"
+			_filename = "weights/tat_experiment_1a_perceptron.dat"
+			_save_state = "no"
+			_load_state = "yes"
+	  />	
+
+		<module
+			class="Ones"
+			name="ClassPercTrainOn"
+			size_x="1"
+			size_y="1"
+			_value="0"
+		/>
+
+		<_module
+			class = "Perceptron"
+			name = "RotPerc"
+			learning_rule = "delta"
+			activation_type = "tanh" 
+			learning_type = "instant"
+			learning_rate = "0.0005"
+			correct_average_size = "200"
+			_filename = "weights/tat_experiment_1a_perceptron.dat"
+			_save_state = "no"
+			_load_state = "yes"
+	  />	
+
+		<_module
+			class="Ones"
+			name="RotPercTrainOn"
+			size_x="1"
+			size_y="1"
+			_value="0"
+		/>
+
+		<_module
+			class = "Perceptron"
+			name = "ScalePerc"
+			learning_rule = "delta"
+			activation_type = "tanh" 
+			learning_type = "instant"
+			learning_rate = "0.0005"
+			correct_average_size = "200"
+			_filename = "weights/tat_experiment_1a_perceptron.dat"
+			_save_state = "no"
+			_load_state = "yes"
+	  />	
+
+		<_module
+			class="Ones"
+			name="ScalePercTrainOn"
+			size_x="1"
+			size_y="1"
+			_value="0"
+		/>
+
+		<_module
+			class = "Perceptron"
+			name = "TransPerc"
+			learning_rule = "delta"
+			activation_type = "tanh" 
+			learning_type = "instant"
+			learning_rate = "0.0005"
+			correct_average_size = "200"
+			_filename = "weights/tat_experiment_1a_perceptron.dat"
+			_save_state = "no"
+			_load_state = "yes"
+	  />	
+
+		<_module
+			class="Ones"
+			name="TransPercTrainOn"
+			size_x="1"
+			size_y="1"
+			_value="0"
+		/>
+
+		<module
+			class = "C3_group"
+			name = "C3_i"
+		/>
+		<module
+			class = "C3_group"
+			name = "C3_r"
+		/>
+		<module
+			class = "C3_group"
+			name = "C3_g"
+		/>
+		<module
+			class = "C3_group"
+			name = "C3_b"
+		/>
+
+      <module
+         class = "OutputFile"
+         name = "OutputFile"
+         _filename = "stat_data/tat_experiment_2a_train.output" 
+         period="100" 
+         >
+         <column name = "ERROR" decimals="4"/>   
+      </module>   
+
+      <module
+         class = "Randomizer_Group"
+         name = "Rand"
+      />
+		<module
+			class="Dataset_Input_Group"
+			name="ReadDataset"
+			_type="$type$"
+			_filename="$filename$"
+			_size_x="$sx$"
+			_size_y="$sy$"
+			_channels="$channels$"
+			_instances="$instances$"
+			_classcount="$classcount$"
+			randomize="true"
+			debug = "false"
+		/>
+	<!-- Connections -->
+	<connection sourcemodule = "ClassPerc" source = "ERROR" targetmodule = "OutputFile" target = "ERROR" delay="1"/>
+	<connection sourcemodule = "ClassPerc" source = "ERROR" targetmodule = "Avg" target = "INPUT" delay="1"/>
+	<connection sourcemodule = "Avg" source = "OUTPUT" targetmodule = "Subtract" target = "INPUT2" delay="1"/>
+	<connection sourcemodule = "Avg" source = "OUTPUT" targetmodule = "Subtract" target = "INPUT1" delay="500"/>
+	<connection sourcemodule = "Subtract" source = "OUTPUT" targetmodule = "StopAvg" target = "INPUT" delay="1"/>
+	<connection sourcemodule = "StopAvg" source = "OUTPUT" targetmodule = "Stop" target = "INPUT" delay="1"/>
+	
+	<connection sourcemodule = "Rand" source = "SCALE_OUTPUT" targetmodule = "ReadDataset" target = "SCALE" delay="1"/>
+	<connection sourcemodule = "Rand" source = "ROTATION_OUTPUT" targetmodule = "ReadDataset" target = "ROTATION" delay="1"/>
+	<connection sourcemodule = "Rand" source = "TRANSX_OUTPUT" targetmodule = "ReadDataset" target = "TRANS_X" delay="1"/>
+	<connection sourcemodule = "Rand" source = "TRANSY_OUTPUT" targetmodule = "ReadDataset" target = "TRANS_Y" delay="1"/>
+	
+	<connection sourcemodule = "ReadDataset" source = "OUTPUT_I" targetmodule = "C3_i" target = "INPUT" delay="1"/>
+	<connection sourcemodule = "ReadDataset" source = "OUTPUT_R" targetmodule = "C3_r" target = "INPUT" delay="1"/>
+	<connection sourcemodule = "ReadDataset" source = "OUTPUT_G" targetmodule = "C3_g" target = "INPUT" delay="1"/>
+	<connection sourcemodule = "ReadDataset" source = "OUTPUT_B" targetmodule = "C3_b" target = "INPUT" delay="1"/>
+
+	<connection sourcemodule = "C3_i" source = "OUTPUT" targetmodule = "ClassPerc_i" target = "INPUT" delay="1"/>
+	<connection sourcemodule = "C3_i" source = "OUTPUT" targetmodule = "ClassPerc_i" target = "T_INPUT" delay="1"/>
+
+	<connection sourcemodule = "C3_i" source = "OUTPUT" targetmodule = "ClassPerc_rgb" target = "INPUT" delay="1"/>
+	<connection sourcemodule = "C3_i" source = "OUTPUT" targetmodule = "ClassPerc_rgb" target = "T_INPUT" delay="1"/>
+	<connection sourcemodule = "C3_r" source = "OUTPUT" targetmodule = "ClassPerc_rgb" target = "INPUT" delay="1"/>
+	<connection sourcemodule = "C3_r" source = "OUTPUT" targetmodule = "ClassPerc_rgb" target = "T_INPUT" delay="1"/>
+	<connection sourcemodule = "C3_g" source = "OUTPUT" targetmodule = "ClassPerc_rgb" target = "INPUT" delay="1"/>
+	<connection sourcemodule = "C3_g" source = "OUTPUT" targetmodule = "ClassPerc_rgb" target = "T_INPUT" delay="1"/>
+	<connection sourcemodule = "C3_b" source = "OUTPUT" targetmodule = "ClassPerc_rgb" target = "INPUT" delay="1"/>
+	<connection sourcemodule = "C3_b" source = "OUTPUT" targetmodule = "ClassPerc_rgb" target = "T_INPUT" delay="1"/>
+	
+	<connection sourcemodule = "ReadDataset" source = "CLASS" targetmodule = "ClassPerc_i" target = "T_TARGET" delay="8"/>
+	<connection sourcemodule = "ClassPercTrainOn" source = "OUTPUT" targetmodule = "ClassPerc_i" target = "TRAIN" delay="1"/>
+	<connection sourcemodule = "ReadDataset" source = "CLASS" targetmodule = "ClassPerc_rgb" target = "T_TARGET" delay="8"/>
+	<connection sourcemodule = "ClassPercTrainOn" source = "OUTPUT" targetmodule = "ClassPerc_rgb" target = "TRAIN" delay="1"/>
+
+	
+	<_connection sourcemodule = "C3" source = "OUTPUT" targetmodule = "RotPerc" target = "INPUT" delay="1"/>
+	<_connection sourcemodule = "C3" source = "OUTPUT" targetmodule = "RotPerc" target = "T_INPUT" delay="1"/>
+	<_connection sourcemodule = "Rand" source = "ROTATION_OUTPUT" targetmodule = "RotPerc" target = "T_TARGET" delay="5"/>
+	<_connection sourcemodule = "RotPercTrainOn" source = "OUTPUT" targetmodule = "RotPerc" target = "TRAIN" delay="1"/>
+	<_connection sourcemodule = "C3" source = "OUTPUT" targetmodule = "ScalePerc" target = "INPUT" delay="1"/>
+	<_connection sourcemodule = "C3" source = "OUTPUT" targetmodule = "ScalePerc" target = "T_INPUT" delay="1"/>
+	<_connection sourcemodule = "Rand" source = "SCALE_OUTPUT" targetmodule = "ScalePerc" target = "T_TARGET" delay="6"/>
+	<_connection sourcemodule = "ScalePercTrainOn" source = "OUTPUT" targetmodule = "ScalePerc" target = "TRAIN" delay="1"/>
+	<_connection sourcemodule = "C3" source = "OUTPUT" targetmodule = "TransPerc" target = "INPUT" delay="1"/>
+	<_connection sourcemodule = "C3" source = "OUTPUT" targetmodule = "TransPerc" target = "T_INPUT" delay="1"/>
+	<_connection sourcemodule = "Rand" source = "TRANSLATION_OUTPUT" targetmodule = "TransPerc" target = "T_TARGET" delay="4"/>
+	<_connection sourcemodule = "TransPercTrainOn" source = "OUTPUT" targetmodule = "TransPerc" target = "TRAIN" delay="1"/>
+</group>
+<!-- end file -->

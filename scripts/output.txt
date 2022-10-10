@@ -1,0 +1,1 @@
+	<output name="$name$" sourcemodule="$sourcemodule$"  source="$source$"  />
